@@ -40,40 +40,42 @@ export function KPICards({ data }: { data: any }) {
 
   return (
     <div className="space-y-4">
-      {/* AI Status Banner */}
-      <div className="glass-card border-primary/20 bg-primary/5 p-4 rounded-xl flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <div className="relative">
+      <div className="glass-card relative overflow-hidden border-primary/30 p-5 rounded-2xl flex items-center justify-between shadow-[0_0_40px_-10px_rgba(245,158,11,0.2)]">
+        {/* Background glow */}
+        <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-transparent to-transparent opacity-50" />
+        <div className="relative flex items-center gap-4">
+          <div className="relative p-2 bg-primary/10 rounded-full border border-primary/20 shadow-[0_0_15px_-3px_rgba(245,158,11,0.5)]">
             <Zap className="h-6 w-6 text-primary animate-pulse" />
             <span className="absolute -top-1 -right-1 flex h-3 w-3">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-3 w-3 bg-primary"></span>
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-80"></span>
+              <span className="relative inline-flex rounded-full h-3 w-3 bg-primary shadow-[0_0_10px_rgba(245,158,11,1)]"></span>
             </span>
           </div>
           <div>
-            <p className="text-sm font-semibold text-white">AI Revenue Engine Active</p>
-            <p className="text-xs text-primary">Continuously optimizing pricing across all room types</p>
+            <p className="text-base font-bold text-white tracking-wide">AI Revenue Engine Active</p>
+            <p className="text-sm text-primary/80">Continuously optimizing pricing across all room types</p>
           </div>
         </div>
-        <Badge className="bg-emerald-500/20 text-emerald-400 border-emerald-500/30">
-          Live
+        <Badge className="relative overflow-hidden bg-emerald-500/20 text-emerald-400 border-emerald-500/40 px-3 py-1 text-sm shadow-[0_0_20px_-5px_rgba(16,185,129,0.3)]">
+          Live System
         </Badge>
       </div>
 
-      {/* KPI Cards */}
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
         {kpis.map((kpi) => (
-          <Card key={kpi.title} className="glass-card shadow-lg flex flex-col">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium text-muted-foreground">
+          <Card key={kpi.title} className="glass-card flex flex-col relative overflow-hidden group">
+            {/* Subtle hover gradient */}
+            <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+            <CardHeader className="relative flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium text-slate-400 tracking-wider uppercase">
                 {kpi.title}
               </CardTitle>
-              <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center">
-                <kpi.icon className="h-4 w-4 text-primary" />
+              <div className="h-10 w-10 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                <kpi.icon className="h-5 w-5 text-primary drop-shadow-[0_0_8px_rgba(245,158,11,0.8)]" />
               </div>
             </CardHeader>
-            <CardContent className="flex-1">
-              <div className="text-2xl font-bold text-white tracking-tight">{kpi.value}</div>
+            <CardContent className="relative flex-1">
+              <div className="text-3xl font-extrabold text-white tracking-tight">{kpi.value}</div>
               <p className="text-xs flex items-center mt-2 group">
                 <span
                   className={`flex items-center px-1.5 py-0.5 rounded-sm font-medium ${

@@ -75,8 +75,10 @@ export default function DashboardPage() {
       {/* Header */}
       <div className="flex justify-between items-start">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight text-white mb-2">Resort Overview</h1>
-          <p className="text-muted-foreground">Monitor performance and AI-driven pricing actions.</p>
+          <h1 className="flex items-center text-4xl font-extrabold tracking-tight text-white mb-2">
+            Kuraz AI <span className="text-muted-foreground font-light mx-3">|</span> <span className="gold-gradient-text">Resort Dashboard</span>
+          </h1>
+          <p className="text-muted-foreground text-lg">Real-time revenue intelligence & AI pricing actions.</p>
         </div>
         {user && (
           <div className="text-right">

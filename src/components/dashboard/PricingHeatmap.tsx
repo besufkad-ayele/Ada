@@ -11,10 +11,10 @@ export function PricingHeatmap({ data }: { data: any[] }) {
   );
 
   // Group by room type
-  const roomTypes = [...new Set(data.map(d => d.room_type_name))];
+  const roomTypes = Array.from(new Set(data.map(d => d.room_type_name)));
   
   // Group by date
-  const datesRaw = [...new Set(data.map(d => d.date))];
+  const datesRaw = Array.from(new Set(data.map(d => d.date)));
   const dates = datesRaw.sort().slice(0, 14); // Show upcoming 14 days
 
   const getDemandColor = (level: string) => {
@@ -37,44 +37,45 @@ export function PricingHeatmap({ data }: { data: any[] }) {
   };
 
   return (
-    <Card className="glass-card shadow-lg border-white/5">
-      <CardHeader>
-        <div className="flex items-center justify-between">
+    <Card className="glass-card shadow-2xl overflow-hidden h-full flex flex-col border-primary/10">
+      <CardHeader className="bg-gradient-to-br from-black/40 via-transparent to-transparent border-b border-white/5 relative">
+        <div className="absolute top-0 right-0 w-32 h-32 bg-primary/10 blur-[50px] rounded-full pointers-events-none" />
+        <div className="flex items-center justify-between relative z-10 w-full">
           <div>
-            <CardTitle className="text-white flex items-center">
-              <CalendarDays className="h-5 w-5 mr-2 text-primary" />
-              14-Day Pricing Outlook
+            <CardTitle className="text-white flex items-center text-xl tracking-tight">
+              <CalendarDays className="h-5 w-5 mr-3 text-primary drop-shadow-[0_0_8px_rgba(245,158,11,0.8)]" />
+              <span className="gold-gradient-text">14-Day Pricing Outlook</span>
             </CardTitle>
-            <CardDescription>Live recommended rates by room type</CardDescription>
+            <CardDescription className="text-slate-400 mt-1 ml-8">Live recommended rates by room type</CardDescription>
           </div>
-          <div className="flex gap-2 text-xs text-muted-foreground">
-            <span className="flex items-center"><div className="w-3 h-3 rounded-full bg-slate-700/60 mr-1"></div> Low</span>
-            <span className="flex items-center"><div className="w-3 h-3 rounded-full bg-blue-500/60 mr-1"></div> Med</span>
-            <span className="flex items-center"><div className="w-3 h-3 rounded-full bg-orange-500/80 mr-1"></div> High</span>
-            <span className="flex items-center"><div className="w-3 h-3 rounded-full bg-rose-500/80 mr-1"></div> Peak</span>
+          <div className="flex gap-3 text-xs text-slate-400 font-medium tracking-wide bg-black/40 px-4 py-2 rounded-xl border border-white/5 shadow-inner">
+            <span className="flex items-center"><div className="w-2.5 h-2.5 rounded-full bg-slate-700 mr-2 shadow-[0_0_5px_rgba(51,65,85,0.8)]"></div> Low</span>
+            <span className="flex items-center"><div className="w-2.5 h-2.5 rounded-full bg-blue-500 mr-2 shadow-[0_0_5px_rgba(59,130,246,0.8)]"></div> Med</span>
+            <span className="flex items-center"><div className="w-2.5 h-2.5 rounded-full bg-orange-500 mr-2 shadow-[0_0_5px_rgba(249,115,22,0.8)]"></div> High</span>
+            <span className="flex items-center"><div className="w-2.5 h-2.5 rounded-full bg-rose-500 mr-2 shadow-[0_0_5px_rgba(244,63,94,0.8)]"></div> Peak</span>
           </div>
         </div>
       </CardHeader>
-      <CardContent>
-        <div className="overflow-x-auto pb-4">
+      <CardContent className="p-0 flex-1">
+        <div className="overflow-x-auto">
           <table className="w-full border-collapse">
             <thead>
               <tr>
-                <th className="p-3 text-left font-medium text-muted-foreground border-b border-white/5 bg-white/5 whitespace-nowrap rounded-tl-xl">
+                <th className="p-4 text-left font-semibold text-slate-300 border-b border-white/5 bg-black/20 whitespace-nowrap uppercase tracking-widest text-[10px]">
                   Room Type
                 </th>
                 {dates.map(date => (
-                  <th key={date} className="p-3 font-medium text-center border-b border-white/5 bg-white/5 min-w-[120px]">
-                    <div className="text-xs text-muted-foreground">{format(parseISO(date), "EEE")}</div>
-                    <div className="text-sm text-white">{format(parseISO(date), "MMM d")}</div>
+                  <th key={date} className="p-3 font-medium text-center border-b border-white/5 bg-black/20 min-w-[140px] border-l border-white/5">
+                    <div className="text-[10px] text-primary uppercase tracking-widest font-bold mb-1">{format(parseISO(date), "EEE")}</div>
+                    <div className="text-sm text-white font-extrabold">{format(parseISO(date), "MMM d")}</div>
                   </th>
                 ))}
               </tr>
             </thead>
-            <tbody>
+            <tbody className="divide-y divide-white/5">
               {roomTypes.map((rtName, i) => (
-                <tr key={rtName} className="group border-b border-white/5 hover:bg-white/[0.02] transition-colors">
-                  <td className="p-4 font-medium text-slate-200 bg-white/5 group-hover:bg-transparent">
+                <tr key={rtName} className="group hover:bg-white/[0.02] transition-colors duration-300">
+                  <td className="p-4 font-bold text-white tracking-wide border-r border-white/5 group-hover:bg-transparent bg-black/10">
                     {rtName}
                   </td>
                   {dates.map(date => {
@@ -87,16 +88,16 @@ export function PricingHeatmap({ data }: { data: any[] }) {
                     const isPeak = cellData.demand_level === "peak";
 
                     return (
-                      <td key={date} className="p-2 border-x border-white/5">
-                        <div className={`p-3 rounded-xl border ${getDemandColor(cellData.demand_level)} flex flex-col items-center justify-center gap-1 transition-transform hover:scale-105 cursor-pointer relative group/cell`}>
-                          {isPeak && <AlertCircle className="absolute -top-1 -right-1 h-3 w-3 text-red-300 animate-pulse" />}
+                      <td key={date} className="p-3 border-x border-white/5 bg-black/10">
+                        <div className={`p-3 rounded-xl border ${getDemandColor(cellData.demand_level)} flex flex-col items-center justify-center gap-1.5 transition-transform hover:scale-105 hover:shadow-xl cursor-pointer relative group/cell min-h-[85px]`}>
+                          {isPeak && <AlertCircle className="absolute -top-2 -right-2 h-5 w-5 text-rose-400 animate-pulse bg-black rounded-full drop-shadow-[0_0_5px_rgba(244,63,94,0.8)]" />}
                           
-                          <div className="font-bold text-sm tracking-tight">
+                          <div className="font-extrabold tracking-tight">
                             ETB {cellData.rate_etb.toLocaleString()}
                           </div>
                           
-                          <div className="flex w-full justify-between items-center mt-1 px-1">
-                            <span className="text-[10px] opacity-80">{Math.round(cellData.occupancy_rate * 100)}% occ</span>
+                          <div className="flex w-full justify-between items-center px-1">
+                            <span className="text-[10px] font-medium opacity-80">{Math.round(cellData.occupancy_rate * 100)}% occ</span>
                             {getFareClassBadge(cellData.fare_class_active)}
                           </div>
                         </div>

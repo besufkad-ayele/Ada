@@ -57,33 +57,37 @@ export function LiveAIActivity() {
   }, []);
 
   return (
-    <Card className="glass-card border-white/5 shadow-lg">
-      <CardHeader className="border-b border-white/5 bg-gradient-to-r from-primary/10 to-transparent">
-        <div className="flex justify-between items-center">
-          <CardTitle className="text-white flex items-center">
-            <Activity className="h-5 w-5 mr-2 text-primary animate-pulse" />
-            Live AI Activity
+    <Card className="glass-card shadow-2xl overflow-hidden h-full flex flex-col">
+      <CardHeader className="border-b border-white/5 bg-gradient-to-br from-primary/10 via-transparent to-transparent relative">
+        <div className="absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
+        <div className="flex justify-between items-center relative z-10">
+          <CardTitle className="text-white flex items-center tracking-tight text-xl">
+            <span className="relative flex h-3 w-3 mr-3 mt-1">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-80"></span>
+              <span className="relative inline-flex rounded-full h-3 w-3 bg-primary shadow-[0_0_10px_rgba(245,158,11,1)]"></span>
+            </span>
+            <span className="gold-gradient-text">Live AI Activity</span>
           </CardTitle>
           <Button
             size="sm"
             variant="outline"
             onClick={triggerAIUpdate}
             disabled={isRefreshing}
-            className="border-primary/20 text-primary hover:bg-primary/10"
+            className="border-primary/20 bg-black/20 text-primary hover:bg-primary/20 hover:text-white transition-all duration-300"
           >
             {isRefreshing ? (
-              <RefreshCw className="h-4 w-4 animate-spin" />
+              <RefreshCw className="h-4 w-4 animate-spin text-primary" />
             ) : (
-              <Zap className="h-4 w-4" />
+              <Zap className="h-4 w-4 drop-shadow-[0_0_5px_rgba(245,158,11,0.5)]" />
             )}
-            <span className="ml-2">Run AI Update</span>
+            <span className="ml-2">Run Engine</span>
           </Button>
         </div>
-        <p className="text-xs text-muted-foreground mt-2">
-          Last updated: {lastUpdate.toLocaleTimeString()}
+        <p className="text-xs text-slate-400 mt-2 font-medium tracking-wide">
+          Last processed: {lastUpdate.toLocaleTimeString()}
         </p>
       </CardHeader>
-      <CardContent className="p-0">
+      <CardContent className="p-0 flex-1">
         <div className="divide-y divide-white/5 max-h-[500px] overflow-y-auto">
           {activities.length === 0 && (
             <div className="p-8 text-center text-muted-foreground">
@@ -92,46 +96,49 @@ export function LiveAIActivity() {
             </div>
           )}
           {activities.map((activity) => (
-            <div key={activity.id} className="p-4 hover:bg-white/5 transition-colors">
-              <div className="flex items-start justify-between mb-2">
-                <div className="flex items-center gap-2">
-                  <BrainCircuit className="h-4 w-4 text-primary" />
-                  <span className="text-sm font-medium text-white capitalize">
+            <div key={activity.id} className="p-5 hover:bg-white/5 transition-all duration-300 group">
+              <div className="flex items-start justify-between mb-3">
+                <div className="flex items-center gap-3">
+                  <div className="p-1.5 rounded-md bg-accent/10 border border-accent/20 text-accent">
+                    <BrainCircuit className="h-4 w-4 drop-shadow-[0_0_5px_rgba(14,165,233,0.5)]" />
+                  </div>
+                  <span className="text-sm font-bold text-white capitalize tracking-wide">
                     {activity.action_type.replace('_', ' ')}
                   </span>
-                  <Badge variant="outline" className="bg-white/5 border-white/10 text-xs">
-                    {activity.room_type}
+                  <Badge variant="outline" className="bg-black/20 border-white/10 text-xs px-2">
+                    {activity.room_type.replace('_', ' ')}
                   </Badge>
                 </div>
-                <span className="text-xs text-muted-foreground">
+                <span className="text-xs text-slate-500 font-medium">
                   {new Date(activity.timestamp).toLocaleTimeString()}
                 </span>
               </div>
               
-              <div className="flex items-center gap-3 mb-2">
+              <div className="flex items-center gap-3 mb-3 bg-black/20 rounded-lg p-3 border border-white/5">
                 {activity.old_rate && (
                   <>
-                    <span className="text-slate-400 line-through text-sm">
+                    <span className="text-slate-500 line-through text-sm">
                       ETB {activity.old_rate.toLocaleString()}
                     </span>
                     {activity.new_rate > activity.old_rate ? (
-                      <TrendingUp className="h-4 w-4 text-emerald-400" />
+                      <TrendingUp className="h-4 w-4 text-emerald-400 drop-shadow-[0_0_3px_rgba(16,185,129,0.5)]" />
                     ) : (
-                      <TrendingDown className="h-4 w-4 text-rose-400" />
+                      <TrendingDown className="h-4 w-4 text-rose-400 drop-shadow-[0_0_3px_rgba(243,114,114,0.5)]" />
                     )}
                   </>
                 )}
-                <span className="text-white font-semibold">
+                <span className="text-white font-extrabold text-lg">
                   ETB {activity.new_rate.toLocaleString()}
                 </span>
-                <Badge className="bg-primary/20 text-primary border-primary/30 text-xs">
-                  {Math.round(activity.confidence * 100)}% confidence
+                <Badge className="bg-primary/10 text-primary border-primary/20 text-[10px] ml-auto">
+                  {Math.round(activity.confidence * 100)}% Conf
                 </Badge>
               </div>
               
-              <p className="text-xs text-muted-foreground italic">
-                {activity.reason}
-              </p>
+              <div className="flex items-start gap-2 text-xs text-slate-400 italic">
+                <div className="mt-0.5 min-w-[4px] h-[4px] rounded-full bg-accent/50" />
+                <p>{activity.reason}</p>
+              </div>
             </div>
           ))}
         </div>

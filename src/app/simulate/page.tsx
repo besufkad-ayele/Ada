@@ -125,11 +125,50 @@ function SimulatePageContent() {
                 </div>
                 <div className="space-y-1">
                   <label className="text-xs text-muted-foreground">Booking Channel</label>
-                  <Input 
-                    value={formData.channel} 
+                  <select
+                    value={formData.channel}
                     onChange={e => setFormData({...formData, channel: e.target.value})}
+                    className="w-full h-10 px-3 py-2 rounded-md bg-black/20 border border-white/10 text-white text-sm"
+                  >
+                    <option value="direct">Direct</option>
+                    <option value="ota_booking">Booking.com</option>
+                    <option value="corporate">Corporate</option>
+                  </select>
+                </div>
+                <div className="space-y-1">
+                  <label className="text-xs text-muted-foreground">Room Type</label>
+                  <select
+                    value={formData.room_type_code}
+                    onChange={e => setFormData({...formData, room_type_code: e.target.value})}
+                    className="w-full h-10 px-3 py-2 rounded-md bg-black/20 border border-white/10 text-white text-sm capitalize"
+                  >
+                    {roomTypes.map(rt => (
+                      <option key={rt.code} value={rt.code}>{rt.name}</option>
+                    ))}
+                    {roomTypes.length === 0 && <option value="standard">Standard</option>}
+                  </select>
+                </div>
+                <div className="space-y-1">
+                  <label className="text-xs text-muted-foreground">Adults</label>
+                  <Input 
+                    type="number"
+                    min="1"
+                    max="6"
+                    value={formData.adults} 
+                    onChange={e => setFormData({...formData, adults: parseInt(e.target.value)})}
                     className="bg-black/20 border-white/10 text-white" 
                   />
+                </div>
+                <div className="space-y-1 pt-6">
+                  <label className="flex items-center text-xs text-white">
+                    <input
+                      type="checkbox"
+                      checked={formData.accept_package}
+                      onChange={e => setFormData({...formData, accept_package: e.target.checked})}
+                      className="mr-2"
+                    />
+                    Accept AI Package Recommendation
+                  </label>
                 </div>
                 <div className="space-y-1">
                   <label className="text-xs text-muted-foreground">Check In</label>
@@ -240,8 +279,9 @@ function SimulatePageContent() {
                         <div className="text-right">
                           <p className="text-sm text-primary font-medium mb-1 drop-shadow-md">Optimized Rate</p>
                           <p className="text-2xl font-bold text-white text-shadow">
-                            ETB {result.ai_analysis.pricing.recommended_rate_etb}
+                            ETB {result.booking.rate_per_night_etb.toLocaleString()} <span className="text-[10px] text-slate-400 font-normal">/ night</span>
                           </p>
+                          <p className="text-xs text-emerald-400 mt-1">Total: ETB {result.booking.total_room_revenue_etb.toLocaleString()}</p>
                         </div>
                       </div>
                       
@@ -275,7 +315,7 @@ function SimulatePageContent() {
                           </div>
                           <div className="text-right">
                             <p className="text-sm text-emerald-400 font-bold bg-emerald-400/10 px-2 py-1 rounded">
-                              + ETB {result.revenue_impact.uplift_etb}
+                              + ETB {result.booking.total_package_revenue_etb.toLocaleString()}
                             </p>
                           </div>
                         </div>
@@ -287,15 +327,19 @@ function SimulatePageContent() {
                     </div>
                   )}
                   
-                  {/* Total Revenue Impact */}
-                  <div className="mt-6 pt-4 border-t border-dashed border-white/20 flex justify-between items-end">
-                    <div>
-                      <p className="text-sm text-slate-400">Total Captured Revenue</p>
-                      <p className="text-3xl font-black text-white mt-1">ETB {result.booking.total_revenue_etb.toLocaleString()}</p>
+                  <div className="mt-6 pt-4 border-t border-dashed border-white/20 flex flex-col items-end">
+                    <div className="flex justify-between items-end w-full mb-2">
+                      <div>
+                        <p className="text-sm text-slate-400">Total Captured Revenue</p>
+                        <p className="text-3xl font-black text-white mt-1">ETB {result.booking.total_revenue_etb.toLocaleString()}</p>
+                      </div>
+                      <Badge variant="outline" className="bg-emerald-500/10 text-emerald-400 border-emerald-500/20 px-3 py-1 text-sm flex flex-col items-end">
+                        <span>{result.revenue_impact.uplift_pct} TRevPAR Impact</span>
+                      </Badge>
                     </div>
-                    <Badge variant="outline" className="bg-emerald-500/10 text-emerald-400 border-emerald-500/20 px-3 py-1 text-sm">
-                      +{result.revenue_impact.uplift_pct}% TRevPAR Target
-                    </Badge>
+                    <div className="w-full mt-2 text-right text-xs text-emerald-500/80 font-medium">
+                      Net System Uplift: + ETB {result.revenue_impact.uplift_etb.toLocaleString()} over baseline
+                    </div>
                   </div>
                 </CardContent>
               </>

@@ -12,12 +12,13 @@ export function RevenueChart({ data }: { data: any[] }) {
   );
 
   return (
-    <Card className="glass-card shadow-lg border-white/5 h-full">
-      <CardHeader>
-        <CardTitle className="text-white">Revenue Trends</CardTitle>
-        <CardDescription>Daily revenue split by room vs. package</CardDescription>
+    <Card className="glass-card shadow-2xl overflow-hidden h-full flex flex-col">
+      <CardHeader className="border-b border-white/5 relative bg-gradient-to-br from-black/40 via-transparent to-transparent">
+        <div className="absolute top-0 right-0 w-32 h-32 bg-primary/10 blur-[50px] rounded-full pointers-events-none" />
+        <CardTitle className="text-white text-xl tracking-tight gold-gradient-text">Revenue Trends</CardTitle>
+        <CardDescription className="text-slate-400">Daily revenue split by room vs. package</CardDescription>
       </CardHeader>
-      <CardContent>
+      <CardContent className="flex-1 pt-6">
         <div className="h-[400px] w-full">
           <ResponsiveContainer width="100%" height="100%">
             <AreaChart
@@ -26,53 +27,64 @@ export function RevenueChart({ data }: { data: any[] }) {
             >
               <defs>
                 <linearGradient id="colorRoom" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.3}/>
-                  <stop offset="95%" stopColor="#3b82f6" stopOpacity={0}/>
+                  <stop offset="5%" stopColor="hsl(199 89% 48%)" stopOpacity={0.4}/>
+                  <stop offset="95%" stopColor="hsl(199 89% 48%)" stopOpacity={0}/>
                 </linearGradient>
                 <linearGradient id="colorPkg" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#10b981" stopOpacity={0.3}/>
-                  <stop offset="95%" stopColor="#10b981" stopOpacity={0}/>
+                  <stop offset="5%" stopColor="hsl(43 96% 56%)" stopOpacity={0.4}/>
+                  <stop offset="95%" stopColor="hsl(43 96% 56%)" stopOpacity={0}/>
                 </linearGradient>
               </defs>
-              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(255,255,255,0.1)" />
+              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(255,255,255,0.05)" />
               <XAxis 
                 dataKey="date" 
                 tickFormatter={(str) => format(parseISO(str), "MMM d")}
-                stroke="#64748b"
-                tick={{fill: '#94a3b8', fontSize: 12}}
+                stroke="transparent"
+                tick={{fill: '#64748b', fontSize: 12}}
                 dy={10}
               />
               <YAxis 
-                stroke="#64748b" 
-                tick={{fill: '#94a3b8', fontSize: 12}}
+                stroke="transparent" 
+                tick={{fill: '#64748b', fontSize: 12}}
                 tickFormatter={(val) => `ETB ${(val / 1000).toFixed(0)}k`}
                 dx={-10}
               />
               <Tooltip 
-                contentStyle={{ backgroundColor: '#0f172a', borderColor: 'rgba(255,255,255,0.1)', borderRadius: '8px', color: '#fff' }}
+                contentStyle={{ 
+                  backgroundColor: 'rgba(15,23,42,0.85)', 
+                  backdropFilter: 'blur(12px)',
+                  border: '1px solid rgba(255,255,255,0.1)', 
+                  borderRadius: '12px', 
+                  color: '#fff',
+                  boxShadow: '0 10px 30px -10px rgba(0,0,0,0.5)'
+                }}
                 labelFormatter={(str) => format(parseISO(str), "MMM d, yyyy")}
-                formatter={(value: number, name: string) => [
-                  `ETB ${value.toLocaleString()}`, 
-                  name === "room_revenue" ? "Room Revenue" : "Package Revenue"
+                formatter={(value: any, name: any) => [
+                  <span key={name} className="font-semibold text-white">ETB {Number(value || 0).toLocaleString()}</span>, 
+                  <span key={name+"_label"} className="text-slate-300">{name === "room_revenue" ? "Room" : "Package"} Revenue</span>
                 ]}
               />
               <Area 
                 type="monotone" 
                 dataKey="room_revenue" 
                 stackId="1" 
-                stroke="#3b82f6" 
+                stroke="hsl(199 89% 48%)" 
+                strokeWidth={3}
                 fillOpacity={1} 
                 fill="url(#colorRoom)" 
-                activeDot={{ r: 6, strokeWidth: 0 }}
+                activeDot={{ r: 8, strokeWidth: 0, fill: "hsl(199 89% 48%)" }}
+                animationDuration={1500}
               />
               <Area 
                 type="monotone" 
                 dataKey="package_revenue" 
                 stackId="1" 
-                stroke="#10b981" 
+                stroke="hsl(43 96% 56%)" 
+                strokeWidth={3}
                 fillOpacity={1} 
                 fill="url(#colorPkg)" 
-                activeDot={{ r: 6, strokeWidth: 0 }}
+                activeDot={{ r: 8, strokeWidth: 0, fill: "hsl(43 96% 56%)", className: "shadow-[0_0_15px_rgba(245,158,11,0.8)]" }}
+                animationDuration={1500}
               />
             </AreaChart>
           </ResponsiveContainer>

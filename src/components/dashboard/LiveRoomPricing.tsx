@@ -76,19 +76,20 @@ export function LiveRoomPricing() {
   }
 
   return (
-    <Card className="glass-card border-white/5 shadow-lg">
-      <CardHeader className="border-b border-white/5 bg-gradient-to-r from-primary/10 to-transparent">
-        <div className="flex justify-between items-center">
-          <CardTitle className="text-white flex items-center">
-            <Hotel className="h-5 w-5 mr-2 text-primary" />
+    <Card className="glass-card shadow-2xl overflow-hidden">
+      <CardHeader className="border-b border-white/10 bg-gradient-to-r from-primary/10 via-transparent to-transparent relative">
+        <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-primary to-transparent opacity-50" />
+        <div className="flex justify-between items-center relative z-10">
+          <CardTitle className="text-white flex items-center text-xl tracking-tight">
+            <Hotel className="h-5 w-5 mr-3 text-primary drop-shadow-[0_0_8px_rgba(245,158,11,0.8)]" />
             Live Room Pricing
           </CardTitle>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-3 bg-black/20 px-3 py-1.5 rounded-full border border-white/5">
             <span className="relative flex h-2 w-2">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
             </span>
-            <span className="text-xs text-muted-foreground">
+            <span className="text-xs text-slate-300 font-medium tracking-wide">
               Updated {lastUpdate.toLocaleTimeString()}
             </span>
           </div>
@@ -109,33 +110,37 @@ export function LiveRoomPricing() {
             const isIncreased = priceChange > 0;
             
             return (
-              <div key={room.room_type_code} className="p-6 hover:bg-white/5 transition-all group">
+              <div key={room.room_type_code} className="p-6 hover:bg-white/5 transition-all duration-300 group">
                 <div className="flex items-start justify-between mb-4">
                   <div className="flex-1">
-                    <div className="flex items-center gap-3 mb-2">
-                      <h3 className="text-lg font-semibold text-white">{room.room_type_name}</h3>
-                      <Badge className="bg-primary/20 text-primary border-primary/30 text-xs">
-                        {Math.round(room.ai_confidence * 100)}% confidence
+                    <div className="flex items-center gap-4 mb-3">
+                      <h3 className="text-xl font-bold text-white tracking-tight">{room.room_type_name}</h3>
+                      <Badge className="bg-primary/10 text-primary border-primary/20 text-xs px-2 shadow-[0_0_10px_-2px_rgba(245,158,11,0.3)]">
+                        Targeting {Math.round(room.ai_confidence * 100)}% Confidence
                       </Badge>
                     </div>
                     
-                    <div className="flex items-center gap-4 mb-3">
+                    <div className="flex flex-wrap items-center gap-6 mb-4 bg-black/20 p-4 rounded-xl border border-white/5">
                       <div>
-                        <p className="text-xs text-muted-foreground">Base Rate</p>
-                        <p className="text-sm text-slate-400 line-through">
+                        <p className="text-xs text-slate-400 uppercase tracking-wider mb-1">Base Rate</p>
+                        <p className="text-sm text-slate-500 line-through">
                           ETB {room.base_rate_etb.toLocaleString()}
                         </p>
                       </div>
                       
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-3">
                         {isIncreased ? (
-                          <TrendingUp className="h-5 w-5 text-emerald-400" />
+                          <div className="h-8 w-8 rounded-full bg-emerald-500/10 flex items-center justify-center">
+                            <TrendingUp className="h-4 w-4 text-emerald-400 drop-shadow-[0_0_5px_rgba(16,185,129,0.5)]" />
+                          </div>
                         ) : (
-                          <TrendingDown className="h-5 w-5 text-rose-400" />
+                          <div className="h-8 w-8 rounded-full bg-rose-500/10 flex items-center justify-center">
+                            <TrendingDown className="h-4 w-4 text-rose-400 drop-shadow-[0_0_5px_rgba(243,114,114,0.5)]" />
+                          </div>
                         )}
                         <div>
-                          <p className="text-xs text-muted-foreground">AI Optimized</p>
-                          <p className="text-2xl font-bold text-white">
+                          <p className="text-xs text-primary uppercase tracking-wider mb-1 font-semibold">AI Optimized</p>
+                          <p className={`text-2xl font-extrabold tracking-tight ${isIncreased ? 'text-emerald-400' : 'text-white'}`}>
                             ETB {room.recommended_rate_etb.toLocaleString()}
                           </p>
                         </div>
