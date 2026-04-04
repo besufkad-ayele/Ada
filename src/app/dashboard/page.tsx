@@ -9,6 +9,8 @@ import { LiveAIActivity } from "../../components/dashboard/LiveAIActivity";
 import { LiveRoomPricing } from "../../components/dashboard/LiveRoomPricing";
 import { RecentBookings } from "../../components/dashboard/RecentBookings";
 import EventPricingCalendar from "../../components/dashboard/EventPricingCalendar";
+import { PageHeader } from "../../components/layout/PageHeader";
+import { BarChart3 } from "lucide-react";
 import { API_BASE } from "../../lib/api";
 
 export default function DashboardPage() {
@@ -71,23 +73,22 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="p-8 max-w-[1600px] mx-auto space-y-8">
-      {/* Header */}
-      <div className="flex justify-between items-start">
-        <div>
-          <h1 className="flex items-center text-4xl font-extrabold tracking-tight text-white mb-2">
-            Kuraz AI <span className="text-muted-foreground font-light mx-3">|</span> <span className="gold-gradient-text">Resort Dashboard</span>
-          </h1>
-          <p className="text-muted-foreground text-lg">Real-time revenue intelligence & AI pricing actions.</p>
-        </div>
-        {user && (
-          <div className="text-right">
-            <p className="text-sm text-slate-400">Logged in as</p>
-            <p className="text-white font-medium">{user.name}</p>
-            <p className="text-xs text-slate-500">{user.role}</p>
-          </div>
-        )}
-      </div>
+    <div className="p-6 md:p-8 max-w-[1600px] mx-auto space-y-8">
+      <PageHeader
+        icon={BarChart3}
+        title="Resort"
+        highlight="Dashboard"
+        description="Real-time revenue intelligence & AI pricing actions."
+        actions={
+          user && (
+            <div className="text-right">
+              <p className="text-sm text-slate-400">Logged in as</p>
+              <p className="text-white font-medium">{user.name}</p>
+              <p className="text-xs text-slate-500">{user.role}</p>
+            </div>
+          )
+        }
+      />
 
       {/* KPI Cards */}
       <KPICards data={kpiData} />

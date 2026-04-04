@@ -6,9 +6,10 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter }
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { BrainCircuit, Play, UserCircle, Hotel, Zap, PackageCheck } from "lucide-react";
+import { BrainCircuit, Play, UserCircle, Hotel, Zap, PackageCheck, Sparkles } from "lucide-react";
 import { API_BASE } from "@/lib/api";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
+import { PageHeader } from "@/components/layout/PageHeader";
 
 function SimulatePageContent() {
   const [scenarios, setScenarios] = useState<any[]>([]);
@@ -78,14 +79,13 @@ function SimulatePageContent() {
   };
 
   return (
-    <div className="p-8 max-w-7xl mx-auto space-y-8">
-      <div>
-        <h1 className="text-3xl font-bold tracking-tight text-white mb-2 flex items-center">
-          <SparklesIcon className="mr-3 text-primary h-8 w-8" />
-          Live AI Simulation
-        </h1>
-        <p className="text-muted-foreground">Demo environment demonstrating dynamic pricing and segmentation in real-time.</p>
-      </div>
+    <div className="p-6 md:p-8 max-w-7xl mx-auto space-y-8">
+      <PageHeader
+        icon={Sparkles}
+        title="Live AI"
+        highlight="Simulation"
+        description="Demo environment demonstrating dynamic pricing and segmentation in real-time."
+      />
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* LEFT COMPONENT - Form Setup */}
@@ -348,29 +348,6 @@ function SimulatePageContent() {
         </div>
       </div>
     </div>
-  );
-}
-
-function SparklesIcon(props: any) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z" />
-      <path d="M5 3v4" />
-      <path d="M19 17v4" />
-      <path d="M3 5h4" />
-      <path d="M17 19h4" />
-    </svg>
   );
 }
 

@@ -4,8 +4,9 @@ import { useEffect, useState } from "react";
 import { PricingHeatmap } from "../../components/dashboard/PricingHeatmap";
 import { API_BASE } from "../../lib/api";
 import { ProtectedRoute } from "../../components/ProtectedRoute";
+import { PageHeader } from "../../components/layout/PageHeader";
 import { Button } from "@/components/ui/button";
-import { Sparkles, Loader2, TrendingUp } from "lucide-react";
+import { Sparkles, Loader2, TrendingUp, CalendarDays } from "lucide-react";
 
 function PricingPageContent() {
   const [heatmapData, setHeatmapData] = useState<any[]>([]);
@@ -69,14 +70,14 @@ function PricingPageContent() {
   };
 
   return (
-    <div className="p-8 max-w-7xl mx-auto space-y-8">
-      <div className="flex justify-between items-end">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight text-white mb-2">Pricing & Inventory Map</h1>
-          <p className="text-muted-foreground">Detailed view of dynamic rates, fare classes, and demand levels.</p>
-        </div>
-
-        <div className="flex flex-col items-end max-w-lg">
+    <div className="p-6 md:p-8 max-w-7xl mx-auto space-y-8">
+      <PageHeader
+        icon={CalendarDays}
+        title="Pricing &"
+        highlight="Inventory"
+        description="Detailed view of dynamic rates, fare classes, and demand levels."
+        actions={
+          <div className="flex flex-col items-end max-w-lg">
           {!aiInsight ? (
             <Button
               onClick={handleAnalyzeMarket}
@@ -105,8 +106,9 @@ function PricingPageContent() {
               </Button>
             </div>
           )}
-        </div>
-      </div>
+          </div>
+        }
+      />
 
       <PricingHeatmap data={heatmapData} />
     </div>

@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { BrainCircuit, Send, Sparkles } from "lucide-react";
 import { API_BASE } from "@/lib/api";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
+import { PageHeader } from "@/components/layout/PageHeader";
 
 const EXAMPLE_QUERIES = [
   "What happens if I block 20 rooms for a tour group next weekend at 15% discount?",
@@ -58,16 +59,13 @@ function AskPageContent() {
   };
 
   return (
-    <div className="p-8 max-w-4xl mx-auto space-y-8">
-      <div>
-        <h1 className="text-3xl font-bold tracking-tight text-white mb-2 flex items-center">
-          <BrainCircuit className="mr-3 h-8 w-8 text-primary" />
-          Ask the Revenue AI
-        </h1>
-        <p className="text-muted-foreground">
-          Natural language interface to the Kuraz AI engine. Powered by Gemini.
-        </p>
-      </div>
+    <div className="p-6 md:p-8 max-w-4xl mx-auto space-y-8">
+      <PageHeader
+        icon={BrainCircuit}
+        title="Ask the"
+        highlight="Revenue AI"
+        description="Natural language interface to the Kuraz AI engine. Powered by Gemini."
+      />
 
       {/* Example queries */}
       {messages.length === 0 && (
