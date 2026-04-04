@@ -8,6 +8,9 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "Kuraz AI | Revenue Management System",
   description: "AI-powered dynamic pricing and package recommendations.",
+  icons: {
+    icon: "/logo.svg",
+  },
 };
 
 export default function RootLayout({

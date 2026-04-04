@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowRight, BarChart3, Brain, Sparkles, TrendingUp, Users, Zap, Star, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -12,7 +13,7 @@ export default function LandingPage() {
       <header className="fixed top-0 w-full z-50 border-b border-white/10 bg-slate-950/80 backdrop-blur-xl">
         <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
           <div className="flex items-center space-x-2">
-            <Sparkles className="h-6 w-6 text-primary" />
+            <Image src="/logo.svg" alt="Kuraz AI Logo" width={24} height={24} />
             <span className="text-xl font-bold text-white">Kuraz AI</span>
           </div>
           <nav className="hidden md:flex space-x-8 text-sm">
@@ -337,7 +338,7 @@ export default function LandingPage() {
       <footer className="border-t border-white/10 py-8 px-6">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center text-sm text-slate-400">
           <div className="flex items-center space-x-2 mb-4 md:mb-0">
-            <Sparkles className="h-5 w-5 text-primary" />
+            <Image src="/logo.svg" alt="Kuraz AI Logo" width={20} height={20} />
             <span className="font-semibold text-white">Kuraz AI</span>
             <span>— Revenue Management System</span>
           </div>

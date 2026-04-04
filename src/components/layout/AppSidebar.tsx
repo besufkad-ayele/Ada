@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
+import Image from "next/image";
 import { 
   BarChart3, 
   Settings, 
@@ -51,7 +52,7 @@ export function AppSidebar() {
     <div className="hidden md:flex md:w-64 md:flex-col glass-card border-r border-r-white/5 z-10">
       {/* Logo Area */}
       <div className="flex h-16 shrink-0 items-center px-6 border-b border-white/5">
-        <Building2 className="h-6 w-6 text-primary mr-3" />
+        <Image src="/logo.svg" alt="Kuraz AI Logo" width={32} height={32} className="mr-3" />
         <span className="text-lg font-semibold bg-clip-text text-transparent bg-gradient-to-r from-white to-white/60">
           Kuraz AI
         </span>
