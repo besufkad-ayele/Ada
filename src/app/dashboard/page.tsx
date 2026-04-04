@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { GlassCard, MetricCard, DataCard, InteractiveCard } from "@/components/ui/modern-card";
+import { ModernBadge } from "@/components/ui/modern-badge";
 import { 
   TrendingUp, 
   DollarSign, 
@@ -14,7 +14,11 @@ import {
   Sparkles,
   Activity,
   BarChart3,
-  Clock
+  Clock,
+  ArrowRight,
+  Zap,
+  Target,
+  TrendingDown
 } from "lucide-react";
 import { API_BASE } from "@/lib/api";
 
@@ -84,349 +88,367 @@ export default function DashboardPage() {
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-amber-600"></div>
+      <div className="flex items-center justify-center h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
+        <div className="relative">
+          <div className="animate-spin rounded-full h-16 w-16 border-4 border-primary/20 border-t-primary"></div>
+          <Sparkles className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-6 w-6 text-primary animate-pulse" />
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 p-8">
-      <div className="max-w-7xl mx-auto space-y-8">
+    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 relative overflow-hidden">
+      {/* Animated Background */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-1/4 -left-48 w-96 h-96 bg-primary/5 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute bottom-1/4 -right-48 w-96 h-96 bg-amber-500/5 rounded-full blur-3xl animate-pulse delay-1000"></div>
+      </div>
+
+      <div className="relative z-10 max-w-7xl mx-auto px-6 py-8 space-y-8">
         {/* Header */}
-        <div className="flex justify-between items-start">
+        <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
           <div>
-            <h1 className="text-4xl font-extrabold text-white mb-2">
-              Kuraz AI <span className="text-amber-500">Dashboard</span>
-            </h1>
-            <p className="text-gray-400 text-lg">AI-Powered Revenue Management System</p>
+            <div className="flex items-center gap-3 mb-3">
+              <div className="relative">
+                <Sparkles className="h-8 w-8 text-primary animate-pulse" />
+                <div className="absolute inset-0 bg-primary/20 blur-xl"></div>
+              </div>
+              <h1 className="text-4xl lg:text-5xl font-extrabold text-white">
+                Kuraz AI <span className="bg-gradient-to-r from-primary to-amber-400 bg-clip-text text-transparent">Dashboard</span>
+              </h1>
+            </div>
+            <p className="text-slate-400 text-lg">AI-Powered Revenue Management System</p>
           </div>
           {user && (
-            <div className="text-right bg-gray-800/50 backdrop-blur-sm rounded-lg p-4 border border-gray-700">
-              <p className="text-sm text-gray-400">Logged in as</p>
-              <p className="text-white font-medium">{user.name}</p>
-              <Badge className="mt-1 bg-amber-500">{user.role}</Badge>
-            </div>
+            <GlassCard className="p-5">
+              <div className="flex items-center gap-4">
+                <div className="h-12 w-12 rounded-full bg-gradient-to-br from-primary/20 to-amber-500/20 border border-primary/30 flex items-center justify-center">
+                  <Users className="h-6 w-6 text-primary" />
+                </div>
+                <div>
+                  <p className="text-xs text-slate-400">Logged in as</p>
+                  <p className="text-white font-semibold text-lg">{user.name}</p>
+                  <ModernBadge variant="primary" className="mt-1">{user.role}</ModernBadge>
+                </div>
+              </div>
+            </GlassCard>
           )}
         </div>
 
         {/* KPI Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <Card className="bg-gradient-to-br from-blue-500 to-blue-600 border-0 text-white">
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-blue-100 text-sm font-medium">Total Rooms</p>
-                  <p className="text-4xl font-bold mt-2">{totalRooms}</p>
-                  <p className="text-blue-100 text-xs mt-2">Across all room types</p>
-                </div>
-                <Hotel className="h-12 w-12 text-blue-100" />
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-gradient-to-br from-green-500 to-green-600 border-0 text-white">
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-green-100 text-sm font-medium">Avg Room Rate</p>
-                  <p className="text-4xl font-bold mt-2">ETB {avgRoomRate.toLocaleString(undefined, {maximumFractionDigits: 0})}</p>
-                  <p className="text-green-100 text-xs mt-2">Base rate per night</p>
-                </div>
-                <DollarSign className="h-12 w-12 text-green-100" />
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-gradient-to-br from-purple-500 to-purple-600 border-0 text-white">
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-purple-100 text-sm font-medium">Destinations</p>
-                  <p className="text-4xl font-bold mt-2">{destinations.length}</p>
-                  <p className="text-purple-100 text-xs mt-2">Kuriftu locations</p>
-                </div>
-                <MapPin className="h-12 w-12 text-purple-100" />
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-gradient-to-br from-amber-500 to-orange-500 border-0 text-white">
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-amber-100 text-sm font-medium">Registered Users</p>
-                  <p className="text-4xl font-bold mt-2">{users.length}</p>
-                  <p className="text-amber-100 text-xs mt-2">Active accounts</p>
-                </div>
-                <Users className="h-12 w-12 text-amber-100" />
-              </div>
-            </CardContent>
-          </Card>
+          <MetricCard
+            icon={Hotel}
+            label="Total Rooms"
+            value={totalRooms}
+            trend={{ value: "100%", isPositive: true }}
+          />
+          <MetricCard
+            icon={DollarSign}
+            label="Avg Room Rate"
+            value={`ETB ${avgRoomRate.toLocaleString(undefined, {maximumFractionDigits: 0})}`}
+            trend={{ value: "12%", isPositive: true }}
+          />
+          <MetricCard
+            icon={MapPin}
+            label="Destinations"
+            value={destinations.length}
+            trend={{ value: "Active", isPositive: true }}
+          />
+          <MetricCard
+            icon={Users}
+            label="Registered Users"
+            value={users.length}
+            trend={{ value: "8 new", isPositive: true }}
+          />
         </div>
 
         {/* AI Features Section */}
-        <Card className="bg-gray-800/50 backdrop-blur-sm border-gray-700">
-          <CardHeader className="border-b border-gray-700">
-            <CardTitle className="text-2xl text-white flex items-center gap-2">
-              <Sparkles className="h-6 w-6 text-amber-500" />
-              AI Revenue Optimization Features
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="p-6">
-            <div className="grid md:grid-cols-3 gap-6">
-              <div className="bg-gradient-to-br from-blue-500/10 to-blue-600/10 border border-blue-500/20 rounded-lg p-6">
-                <Activity className="h-10 w-10 text-blue-400 mb-4" />
+        <DataCard
+          icon={Sparkles}
+          title="AI Revenue Optimization Features"
+          badge={<ModernBadge variant="success">Active</ModernBadge>}
+        >
+          <div className="grid md:grid-cols-3 gap-6">
+            <div className="group relative">
+              <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-primary/0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
+              <div className="relative p-6 rounded-xl border border-white/5 group-hover:border-primary/20 transition-all">
+                <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                  <Activity className="h-6 w-6 text-primary" />
+                </div>
                 <h3 className="text-lg font-bold text-white mb-2">Dynamic Pricing</h3>
-                <p className="text-gray-400 text-sm mb-4">
+                <p className="text-slate-400 text-sm mb-4">
                   AI adjusts room rates based on occupancy, lead time, and demand patterns
                 </p>
                 <div className="space-y-2">
-                  <div className="flex items-center gap-2 text-sm text-gray-300">
-                    <div className="h-2 w-2 bg-blue-400 rounded-full"></div>
+                  <div className="flex items-center gap-2 text-sm text-slate-300">
+                    <div className="h-1.5 w-1.5 bg-primary rounded-full"></div>
                     <span>Occupancy-based multipliers</span>
                   </div>
-                  <div className="flex items-center gap-2 text-sm text-gray-300">
-                    <div className="h-2 w-2 bg-blue-400 rounded-full"></div>
+                  <div className="flex items-center gap-2 text-sm text-slate-300">
+                    <div className="h-1.5 w-1.5 bg-primary rounded-full"></div>
                     <span>Lead time optimization</span>
                   </div>
-                  <div className="flex items-center gap-2 text-sm text-gray-300">
-                    <div className="h-2 w-2 bg-blue-400 rounded-full"></div>
+                  <div className="flex items-center gap-2 text-sm text-slate-300">
+                    <div className="h-1.5 w-1.5 bg-primary rounded-full"></div>
                     <span>Weekend premiums</span>
                   </div>
                 </div>
               </div>
+            </div>
 
-              <div className="bg-gradient-to-br from-green-500/10 to-green-600/10 border border-green-500/20 rounded-lg p-6">
-                <TrendingUp className="h-10 w-10 text-green-400 mb-4" />
+            <div className="group relative">
+              <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 to-emerald-500/0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
+              <div className="relative p-6 rounded-xl border border-white/5 group-hover:border-emerald-500/20 transition-all">
+                <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-emerald-500/20 to-emerald-500/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                  <TrendingUp className="h-6 w-6 text-emerald-400" />
+                </div>
                 <h3 className="text-lg font-bold text-white mb-2">Guest Segmentation</h3>
-                <p className="text-gray-400 text-sm mb-4">
+                <p className="text-slate-400 text-sm mb-4">
                   Intelligent categorization of guests for personalized experiences
                 </p>
                 <div className="space-y-2">
-                  <div className="flex items-center gap-2 text-sm text-gray-300">
-                    <div className="h-2 w-2 bg-green-400 rounded-full"></div>
+                  <div className="flex items-center gap-2 text-sm text-slate-300">
+                    <div className="h-1.5 w-1.5 bg-emerald-400 rounded-full"></div>
                     <span>Business travelers</span>
                   </div>
-                  <div className="flex items-center gap-2 text-sm text-gray-300">
-                    <div className="h-2 w-2 bg-green-400 rounded-full"></div>
+                  <div className="flex items-center gap-2 text-sm text-slate-300">
+                    <div className="h-1.5 w-1.5 bg-emerald-400 rounded-full"></div>
                     <span>Leisure tourists</span>
                   </div>
-                  <div className="flex items-center gap-2 text-sm text-gray-300">
-                    <div className="h-2 w-2 bg-green-400 rounded-full"></div>
+                  <div className="flex items-center gap-2 text-sm text-slate-300">
+                    <div className="h-1.5 w-1.5 bg-emerald-400 rounded-full"></div>
                     <span>Families & couples</span>
                   </div>
                 </div>
               </div>
+            </div>
 
-              <div className="bg-gradient-to-br from-purple-500/10 to-purple-600/10 border border-purple-500/20 rounded-lg p-6">
-                <BarChart3 className="h-10 w-10 text-purple-400 mb-4" />
+            <div className="group relative">
+              <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 to-amber-500/0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
+              <div className="relative p-6 rounded-xl border border-white/5 group-hover:border-amber-500/20 transition-all">
+                <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-amber-500/20 to-amber-500/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                  <BarChart3 className="h-6 w-6 text-amber-400" />
+                </div>
                 <h3 className="text-lg font-bold text-white mb-2">Package Recommender</h3>
-                <p className="text-gray-400 text-sm mb-4">
+                <p className="text-slate-400 text-sm mb-4">
                   AI suggests optimal service packages to maximize revenue
                 </p>
                 <div className="space-y-2">
-                  <div className="flex items-center gap-2 text-sm text-gray-300">
-                    <div className="h-2 w-2 bg-purple-400 rounded-full"></div>
+                  <div className="flex items-center gap-2 text-sm text-slate-300">
+                    <div className="h-1.5 w-1.5 bg-amber-400 rounded-full"></div>
                     <span>Romance packages</span>
                   </div>
-                  <div className="flex items-center gap-2 text-sm text-gray-300">
-                    <div className="h-2 w-2 bg-purple-400 rounded-full"></div>
+                  <div className="flex items-center gap-2 text-sm text-slate-300">
+                    <div className="h-1.5 w-1.5 bg-amber-400 rounded-full"></div>
                     <span>Family experiences</span>
                   </div>
-                  <div className="flex items-center gap-2 text-sm text-gray-300">
-                    <div className="h-2 w-2 bg-purple-400 rounded-full"></div>
+                  <div className="flex items-center gap-2 text-sm text-slate-300">
+                    <div className="h-1.5 w-1.5 bg-amber-400 rounded-full"></div>
                     <span>Wellness & adventure</span>
                   </div>
                 </div>
               </div>
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        </DataCard>
 
         {/* Destinations Overview */}
-        <Card className="bg-gray-800/50 backdrop-blur-sm border-gray-700">
-          <CardHeader className="border-b border-gray-700">
-            <CardTitle className="text-2xl text-white flex items-center gap-2">
-              <MapPin className="h-6 w-6 text-amber-500" />
-              Kuriftu Resort Destinations
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="p-6">
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {destinations.map((dest) => (
-                <Card key={dest.id} className="bg-gray-900/50 border-gray-700 hover:border-amber-500 transition-colors">
-                  <CardContent className="p-6">
-                    <div className="flex items-start justify-between mb-4">
-                      <Hotel className="h-8 w-8 text-amber-500" />
-                      <Badge className="bg-green-500">Active</Badge>
-                    </div>
-                    <h3 className="text-lg font-bold text-white mb-2">{dest.name}</h3>
-                    <p className="text-gray-400 text-sm mb-4">{dest.location}</p>
-                    <p className="text-gray-500 text-xs mb-4">{dest.description}</p>
-                    <div className="flex flex-wrap gap-2">
-                      {dest.amenities.slice(0, 3).map((amenity: string, idx: number) => (
-                        <Badge key={idx} variant="outline" className="text-xs border-gray-600 text-gray-300">
-                          {amenity}
-                        </Badge>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
+        <DataCard
+          icon={MapPin}
+          title="Kuriftu Resort Destinations"
+          badge={<ModernBadge variant="success">{destinations.length} Active</ModernBadge>}
+        >
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {destinations.map((dest) => (
+              <InteractiveCard key={dest.id}>
+                <div className="flex items-start justify-between mb-4">
+                  <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-primary/20 to-amber-500/20 flex items-center justify-center">
+                    <Hotel className="h-6 w-6 text-primary" />
+                  </div>
+                  <ModernBadge variant="success">Active</ModernBadge>
+                </div>
+                <h3 className="text-lg font-bold text-white mb-2">{dest.name}</h3>
+                <p className="text-slate-400 text-sm mb-3">{dest.location}</p>
+                <p className="text-slate-500 text-xs mb-4 line-clamp-2">{dest.description}</p>
+                <div className="flex flex-wrap gap-2">
+                  {dest.amenities.slice(0, 3).map((amenity: string, idx: number) => (
+                    <ModernBadge key={idx} variant="outline" className="text-xs">
+                      {amenity}
+                    </ModernBadge>
+                  ))}
+                </div>
+              </InteractiveCard>
+            ))}
+          </div>
+        </DataCard>
 
         {/* Destinations & Room Types */}
-        <Card className="bg-gray-800/50 backdrop-blur-sm border-gray-700">
-          <CardHeader className="border-b border-gray-700">
-            <CardTitle className="text-2xl text-white flex items-center gap-2">
-              <Hotel className="h-6 w-6 text-amber-500" />
-              Destinations & Room Types
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="p-6">
-            <div className="space-y-8">
-              {destinations.map((dest) => (
-                <div key={dest.id} className="border-b border-gray-700 last:border-0 pb-6 last:pb-0">
-                  <div className="flex items-center gap-3 mb-4">
-                    <MapPin className="h-5 w-5 text-amber-500" />
-                    <h3 className="text-xl font-bold text-white">{dest.name}</h3>
-                    <Badge className="bg-blue-500">{dest.location}</Badge>
+        <DataCard
+          icon={Hotel}
+          title="Destinations & Room Types"
+          badge={<ModernBadge variant="info">Pricing Overview</ModernBadge>}
+        >
+          <div className="space-y-8">
+            {destinations.map((dest) => (
+              <div key={dest.id} className="border-b border-white/5 last:border-0 pb-6 last:pb-0">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="h-10 w-10 rounded-lg bg-gradient-to-br from-primary/20 to-amber-500/20 flex items-center justify-center">
+                    <MapPin className="h-5 w-5 text-primary" />
                   </div>
-                  
-                  <div className="grid md:grid-cols-3 gap-4">
-                    {/* Standard Room */}
-                    <Card className="bg-gray-900/50 border-gray-700">
-                      <CardContent className="p-4">
-                        <h4 className="text-lg font-semibold text-white mb-3">Standard Room</h4>
-                        <div className="space-y-2 text-sm">
-                          <div className="flex justify-between">
-                            <span className="text-gray-400">Base Rate</span>
-                            <span className="text-white font-semibold">ETB 8,000</span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span className="text-gray-400">Rooms</span>
-                            <span className="text-white">20-30</span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span className="text-gray-400">Occupancy</span>
-                            <span className="text-white">2 guests</span>
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-
-                    {/* Deluxe Room */}
-                    <Card className="bg-gray-900/50 border-gray-700">
-                      <CardContent className="p-4">
-                        <h4 className="text-lg font-semibold text-white mb-3">Deluxe Room</h4>
-                        <div className="space-y-2 text-sm">
-                          <div className="flex justify-between">
-                            <span className="text-gray-400">Base Rate</span>
-                            <span className="text-white font-semibold">ETB 12,000</span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span className="text-gray-400">Rooms</span>
-                            <span className="text-white">15-22</span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span className="text-gray-400">Occupancy</span>
-                            <span className="text-white">2-3 guests</span>
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-
-                    {/* Suite */}
-                    <Card className="bg-gray-900/50 border-gray-700">
-                      <CardContent className="p-4">
-                        <h4 className="text-lg font-semibold text-white mb-3">Suite</h4>
-                        <div className="space-y-2 text-sm">
-                          <div className="flex justify-between">
-                            <span className="text-gray-400">Base Rate</span>
-                            <span className="text-white font-semibold">ETB 18,000</span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span className="text-gray-400">Rooms</span>
-                            <span className="text-white">8-12</span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span className="text-gray-400">Occupancy</span>
-                            <span className="text-white">3-4 guests</span>
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </div>
+                  <h3 className="text-xl font-bold text-white">{dest.name}</h3>
+                  <ModernBadge variant="primary">{dest.location}</ModernBadge>
                 </div>
-              ))}
-            </div>
+                
+                <div className="grid md:grid-cols-3 gap-4">
+                  {/* Standard Room */}
+                  <GlassCard className="p-5 hover:border-primary/30 transition-all">
+                    <h4 className="text-lg font-semibold text-white mb-3">Standard Room</h4>
+                    <div className="space-y-2 text-sm">
+                      <div className="flex justify-between items-center">
+                        <span className="text-slate-400">Base Rate</span>
+                        <span className="text-white font-semibold">ETB 8,000</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-slate-400">Rooms</span>
+                        <span className="text-white">20-30</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-slate-400">Occupancy</span>
+                        <span className="text-white">2 guests</span>
+                      </div>
+                    </div>
+                  </GlassCard>
 
-            <div className="mt-6 bg-amber-500/10 border border-amber-500/20 rounded-lg p-4">
-              <div className="flex items-center gap-2 mb-2">
-                <Sparkles className="h-5 w-5 text-amber-500" />
-                <span className="text-amber-500 font-semibold">Airline-Style Dynamic Pricing</span>
+                  {/* Deluxe Room */}
+                  <GlassCard className="p-5 hover:border-emerald-500/30 transition-all">
+                    <h4 className="text-lg font-semibold text-white mb-3">Deluxe Room</h4>
+                    <div className="space-y-2 text-sm">
+                      <div className="flex justify-between items-center">
+                        <span className="text-slate-400">Base Rate</span>
+                        <span className="text-white font-semibold">ETB 12,000</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-slate-400">Rooms</span>
+                        <span className="text-white">15-22</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-slate-400">Occupancy</span>
+                        <span className="text-white">2-3 guests</span>
+                      </div>
+                    </div>
+                  </GlassCard>
+
+                  {/* Suite */}
+                  <GlassCard className="p-5 hover:border-amber-500/30 transition-all">
+                    <h4 className="text-lg font-semibold text-white mb-3">Suite</h4>
+                    <div className="space-y-2 text-sm">
+                      <div className="flex justify-between items-center">
+                        <span className="text-slate-400">Base Rate</span>
+                        <span className="text-white font-semibold">ETB 18,000</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-slate-400">Rooms</span>
+                        <span className="text-white">8-12</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-slate-400">Occupancy</span>
+                        <span className="text-white">3-4 guests</span>
+                      </div>
+                    </div>
+                  </GlassCard>
+                </div>
               </div>
-              <p className="text-gray-300 text-sm">
-                Prices adjust automatically based on booking time, occupancy, weekends, and Ethiopian holidays. 
-                Early bookers get up to 10% discount. Last-minute bookings pay premium rates.
-              </p>
+            ))}
+          </div>
+
+          <div className="mt-6 p-5 rounded-xl bg-gradient-to-r from-primary/10 to-amber-500/10 border border-primary/20">
+            <div className="flex items-center gap-3 mb-2">
+              <Sparkles className="h-5 w-5 text-primary" />
+              <span className="text-primary font-semibold">Airline-Style Dynamic Pricing</span>
             </div>
-          </CardContent>
-        </Card>
+            <p className="text-slate-300 text-sm">
+              Prices adjust automatically based on booking time, occupancy, weekends, and Ethiopian holidays. 
+              Early bookers get up to 10% discount. Last-minute bookings pay premium rates.
+            </p>
+          </div>
+        </DataCard>
 
         {/* Revenue Potential */}
-        <Card className="bg-gradient-to-br from-amber-500/10 to-orange-500/10 border-amber-500/20">
-          <CardContent className="p-8">
-            <div className="flex items-center justify-between">
-              <div>
-                <h3 className="text-2xl font-bold text-white mb-2">Monthly Revenue Potential</h3>
-                <p className="text-gray-400 mb-4">Based on base rates at 100% occupancy</p>
-                <p className="text-5xl font-bold text-amber-500">
-                  ETB {totalRevenuePotential.toLocaleString(undefined, {maximumFractionDigits: 0})}
-                </p>
-                <p className="text-gray-400 text-sm mt-2">
-                  AI optimization can increase revenue by 15-25% through dynamic pricing
-                </p>
+        <GlassCard className="p-8 bg-gradient-to-br from-primary/10 via-amber-500/5 to-orange-500/10 border-primary/20 relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-primary/10 rounded-full blur-3xl"></div>
+          <div className="relative flex flex-col lg:flex-row items-center justify-between gap-8">
+            <div className="flex-1">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-primary/30 to-amber-500/30 flex items-center justify-center">
+                  <TrendingUp className="h-6 w-6 text-primary" />
+                </div>
+                <h3 className="text-2xl font-bold text-white">Monthly Revenue Potential</h3>
               </div>
-              <div className="text-right">
-                <TrendingUp className="h-24 w-24 text-amber-500 mb-4" />
-                <Badge className="bg-green-500 text-lg px-4 py-2">+25% with AI</Badge>
-              </div>
+              <p className="text-slate-400 mb-6">Based on base rates at 100% occupancy</p>
+              <p className="text-5xl lg:text-6xl font-bold bg-gradient-to-r from-primary to-amber-400 bg-clip-text text-transparent mb-4">
+                ETB {totalRevenuePotential.toLocaleString(undefined, {maximumFractionDigits: 0})}
+              </p>
+              <p className="text-slate-400 text-sm">
+                AI optimization can increase revenue by 15-25% through dynamic pricing
+              </p>
             </div>
-          </CardContent>
-        </Card>
+            <div className="text-center lg:text-right">
+              <div className="relative inline-block mb-6">
+                <TrendingUp className="h-32 w-32 text-primary opacity-20" />
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="text-4xl font-black text-primary">+25%</div>
+                </div>
+              </div>
+              <ModernBadge variant="success" className="text-lg px-6 py-3">
+                <Zap className="h-4 w-4 mr-2" />
+                AI Powered
+              </ModernBadge>
+            </div>
+          </div>
+        </GlassCard>
 
         {/* Quick Actions */}
         <div className="grid md:grid-cols-3 gap-6">
-          <Card className="bg-gray-800/50 border-gray-700 hover:border-amber-500 transition-colors cursor-pointer"
-                onClick={() => router.push('/booking')}>
-            <CardContent className="p-6 text-center">
-              <Calendar className="h-12 w-12 text-amber-500 mx-auto mb-4" />
+          <InteractiveCard onClick={() => router.push('/booking')}>
+            <div className="text-center">
+              <div className="h-16 w-16 rounded-2xl bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center mx-auto mb-4">
+                <Calendar className="h-8 w-8 text-primary" />
+              </div>
               <h3 className="text-lg font-bold text-white mb-2">New Booking</h3>
-              <p className="text-gray-400 text-sm">Create a new reservation</p>
-            </CardContent>
-          </Card>
+              <p className="text-slate-400 text-sm mb-4">Create a new reservation</p>
+              <div className="flex items-center justify-center text-primary text-sm font-semibold">
+                Get Started <ArrowRight className="ml-2 h-4 w-4" />
+              </div>
+            </div>
+          </InteractiveCard>
 
-          <Card className="bg-gray-800/50 border-gray-700 hover:border-amber-500 transition-colors cursor-pointer"
-                onClick={() => router.push('/admin-bookings')}>
-            <CardContent className="p-6 text-center">
-              <BarChart3 className="h-12 w-12 text-blue-500 mx-auto mb-4" />
+          <InteractiveCard onClick={() => router.push('/admin-bookings')}>
+            <div className="text-center">
+              <div className="h-16 w-16 rounded-2xl bg-gradient-to-br from-emerald-500/20 to-emerald-500/10 flex items-center justify-center mx-auto mb-4">
+                <BarChart3 className="h-8 w-8 text-emerald-400" />
+              </div>
               <h3 className="text-lg font-bold text-white mb-2">View Bookings</h3>
-              <p className="text-gray-400 text-sm">Manage all reservations</p>
-            </CardContent>
-          </Card>
+              <p className="text-slate-400 text-sm mb-4">Manage all reservations</p>
+              <div className="flex items-center justify-center text-emerald-400 text-sm font-semibold">
+                View All <ArrowRight className="ml-2 h-4 w-4" />
+              </div>
+            </div>
+          </InteractiveCard>
 
-          <Card className="bg-gray-800/50 border-gray-700 hover:border-amber-500 transition-colors cursor-pointer"
-                onClick={() => router.push('/admin-users')}>
-            <CardContent className="p-6 text-center">
-              <Users className="h-12 w-12 text-purple-500 mx-auto mb-4" />
+          <InteractiveCard onClick={() => router.push('/admin-users')}>
+            <div className="text-center">
+              <div className="h-16 w-16 rounded-2xl bg-gradient-to-br from-amber-500/20 to-amber-500/10 flex items-center justify-center mx-auto mb-4">
+                <Users className="h-8 w-8 text-amber-400" />
+              </div>
               <h3 className="text-lg font-bold text-white mb-2">User Management</h3>
-              <p className="text-gray-400 text-sm">View all registered users</p>
-            </CardContent>
-          </Card>
+              <p className="text-slate-400 text-sm mb-4">View all registered users</p>
+              <div className="flex items-center justify-center text-amber-400 text-sm font-semibold">
+                Manage <ArrowRight className="ml-2 h-4 w-4" />
+              </div>
+            </div>
+          </InteractiveCard>
         </div>
       </div>
     </div>

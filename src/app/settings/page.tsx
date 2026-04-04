@@ -60,15 +60,15 @@ function SettingsPageContent() {
           <Settings className="mr-3 h-8 w-8 text-primary" />
           System Configuration
         </h1>
-        <p className="text-muted-foreground">
+        <p className="text-slate-400">
           Current engine parameters and system settings for Kuraz AI.
         </p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {sections.map((section) => (
-          <Card key={section.title} className="glass-card shadow-lg border-white/5">
-            <CardHeader className="border-b border-white/5 bg-white/5">
+          <Card key={section.title} className="rounded-2xl bg-slate-900/60 backdrop-blur-xl border border-white/10 shadow-[0_4px_6px_rgba(0,0,0,0.1)]">
+            <CardHeader className="border-b border-white/5 bg-white/5 rounded-t-2xl">
               <CardTitle className="text-white flex items-center text-lg">
                 <section.icon className="h-5 w-5 mr-2 text-primary" />
                 {section.title}
@@ -78,8 +78,8 @@ function SettingsPageContent() {
               <div className="divide-y divide-white/5">
                 {section.items.map((item) => (
                   <div key={item.label} className="flex justify-between items-center px-6 py-3">
-                    <span className="text-sm text-muted-foreground">{item.label}</span>
-                    <Badge variant="outline" className="bg-white/5 border-white/10 text-slate-300 font-mono text-xs">
+                    <span className="text-sm text-slate-400">{item.label}</span>
+                    <Badge variant="outline" className="bg-white/5 border-white/10 text-slate-300 font-mono text-xs rounded-full px-3 py-1">
                       {item.value}
                     </Badge>
                   </div>
@@ -90,10 +90,10 @@ function SettingsPageContent() {
         ))}
       </div>
 
-      <Card className="glass-card border-primary/20 bg-primary/5">
+      <Card className="rounded-2xl bg-slate-900/60 backdrop-blur-xl border border-primary/20 shadow-[0_4px_6px_rgba(0,0,0,0.1)]">
         <CardContent className="p-6">
           <p className="text-sm text-primary font-medium mb-1">Hackathon Demo Mode</p>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-sm text-slate-400">
             This system is running with synthetic data generated for the Ethiopia Hospitality Hackathon 2026.
             To reset and re-seed data, call <code className="bg-white/10 px-1.5 py-0.5 rounded text-white">POST /api/seed</code> on the backend.
           </p>

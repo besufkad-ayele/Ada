@@ -102,22 +102,22 @@ function PackagesPageContent() {
       {/* Header */}
       <div className="text-center mb-8">
         <div className="flex items-center justify-center gap-3 mb-4">
-          <Package className="h-10 w-10 text-amber-500" />
-          <h1 className="text-4xl font-bold text-white">AI-Powered Service Packages</h1>
+          <Package className="h-10 w-10 text-primary animate-pulse" />
+          <h1 className="text-4xl font-bold text-white tracking-tight">AI-Powered Service Packages</h1>
         </div>
-        <p className="text-lg text-gray-300">
+        <p className="text-lg text-slate-400">
           Dynamic package pricing integrated with airline-style revenue management
         </p>
-        <Badge className="mt-2 bg-blue-600 text-white">
+        <Badge className="mt-2 bg-primary/20 text-primary border-primary/30 rounded-full px-4 py-1.5">
           Packages Adjust with Room Pricing
         </Badge>
       </div>
 
       {/* Destination Selector */}
-      <Card className="bg-gray-800/50">
+      <Card className="rounded-2xl bg-slate-900/60 backdrop-blur-xl border border-white/10 shadow-[0_4px_6px_rgba(0,0,0,0.1)]">
         <CardHeader>
           <CardTitle className="text-white flex items-center gap-2">
-            <MapPin className="h-5 w-5 text-amber-500" />
+            <MapPin className="h-5 w-5 text-primary" />
             Select Destination
           </CardTitle>
         </CardHeader>
@@ -127,10 +127,10 @@ function PackagesPageContent() {
               <Button
                 key={dest.code}
                 onClick={() => setSelectedDestination(dest.code)}
-                className={`h-auto py-4 flex flex-col items-center gap-2 ${
+                className={`h-auto py-4 flex flex-col items-center gap-2 rounded-xl transition-all duration-200 ${
                   selectedDestination === dest.code
-                    ? 'bg-amber-600 hover:bg-amber-700'
-                    : 'bg-gray-700 hover:bg-gray-600'
+                    ? 'bg-primary hover:bg-primary/90 shadow-[0_2px_4px_rgba(59,130,246,0.2)]'
+                    : 'bg-slate-800/50 hover:bg-slate-700/50 border border-white/10'
                 }`}
               >
                 <MapPin className="h-6 w-6" />
@@ -142,35 +142,35 @@ function PackagesPageContent() {
       </Card>
 
       {/* How It Works */}
-      <Card className="bg-gradient-to-r from-indigo-900/50 to-purple-900/50 border-indigo-500/30">
+      <Card className="rounded-2xl bg-gradient-to-r from-indigo-900/50 to-purple-900/50 backdrop-blur-xl border border-indigo-500/30 shadow-[0_4px_6px_rgba(0,0,0,0.1)]">
         <CardContent className="p-6">
           <div className="flex items-start gap-4">
-            <div className="bg-indigo-500/20 p-3 rounded-full">
+            <div className="bg-indigo-500/20 p-3 rounded-xl border border-indigo-500/30">
               <Sparkles className="h-8 w-8 text-indigo-400" />
             </div>
             <div className="flex-1">
               <h3 className="text-xl font-bold text-white mb-2">Dynamic Package Pricing</h3>
-              <p className="text-gray-300 mb-4">
+              <p className="text-slate-300 mb-4">
                 Package prices are calculated based on the current airline-style room pricing. 
                 When room rates increase due to high demand, package values automatically adjust to maintain profitability.
               </p>
               
               <div className="grid md:grid-cols-3 gap-4 mt-4">
-                <div className="bg-black/30 rounded-lg p-4">
+                <div className="bg-black/30 rounded-xl p-4 border border-white/5">
                   <h4 className="text-sm font-semibold text-blue-400 mb-2">Base Package Price</h4>
-                  <p className="text-xs text-gray-400">
+                  <p className="text-xs text-slate-400">
                     Each package has a base price that covers services, amenities, and experiences included.
                   </p>
                 </div>
-                <div className="bg-black/30 rounded-lg p-4">
+                <div className="bg-black/30 rounded-xl p-4 border border-white/5">
                   <h4 className="text-sm font-semibold text-green-400 mb-2">Room Rate Integration</h4>
-                  <p className="text-xs text-gray-400">
+                  <p className="text-xs text-slate-400">
                     Total booking cost = Optimized room rate (from airline pricing) + Selected packages.
                   </p>
                 </div>
-                <div className="bg-black/30 rounded-lg p-4">
+                <div className="bg-black/30 rounded-xl p-4 border border-white/5">
                   <h4 className="text-sm font-semibold text-amber-400 mb-2">AI Recommendations</h4>
-                  <p className="text-xs text-gray-400">
+                  <p className="text-xs text-slate-400">
                     System recommends packages based on guest profile, destination, and booking patterns.
                   </p>
                 </div>
@@ -185,9 +185,9 @@ function PackagesPageContent() {
         {packages.map((pkg) => (
           <Card
             key={pkg.id}
-            className="bg-gray-800/50 hover:scale-105 transition-transform duration-300"
+            className="rounded-2xl bg-slate-900/60 backdrop-blur-xl border border-white/10 hover:scale-105 hover:border-primary/30 hover:shadow-[0_8px_16px_rgba(0,0,0,0.2)] transition-all duration-300"
           >
-            <CardHeader className={`bg-gradient-to-r ${getPackageColor(pkg.id)} text-white`}>
+            <CardHeader className={`bg-gradient-to-r ${getPackageColor(pkg.id)} text-white rounded-t-2xl`}>
               <CardTitle className="flex items-center gap-3">
                 {getPackageIcon(pkg.id)}
                 <div>
@@ -199,20 +199,20 @@ function PackagesPageContent() {
             <CardContent className="p-6">
               <div className="mb-6">
                 <div className="flex items-center justify-between mb-4">
-                  <span className="text-gray-400">Package Price</span>
+                  <span className="text-slate-400">Package Price</span>
                   <div className="text-right">
                     <p className="text-3xl font-bold text-white">
                       ETB {pkg.price_etb.toLocaleString()}
                     </p>
-                    <p className="text-xs text-gray-400">per booking</p>
+                    <p className="text-xs text-slate-400">per booking</p>
                   </div>
                 </div>
 
-                <div className="bg-blue-900/30 border border-blue-500/30 rounded-lg p-4 mb-4">
+                <div className="bg-blue-900/30 border border-blue-500/30 rounded-xl p-4 mb-4">
                   <p className="text-sm text-blue-300 mb-2 font-semibold">Included Services:</p>
                   <ul className="space-y-2">
                     {pkg.services.map((service: string, idx: number) => (
-                      <li key={idx} className="text-sm text-gray-300 flex items-center gap-2">
+                      <li key={idx} className="text-sm text-slate-300 flex items-center gap-2">
                         <span className="text-green-400">✓</span>
                         {service}
                       </li>
@@ -220,7 +220,7 @@ function PackagesPageContent() {
                   </ul>
                 </div>
 
-                <div className="bg-amber-900/30 border border-amber-500/30 rounded-lg p-3">
+                <div className="bg-amber-900/30 border border-amber-500/30 rounded-xl p-3">
                   <p className="text-xs text-amber-300">
                     <Sparkles className="h-3 w-3 inline mr-1" />
                     This package integrates with airline-style room pricing. Total cost = Room rate + Package price.
@@ -228,7 +228,7 @@ function PackagesPageContent() {
                 </div>
               </div>
 
-              <Button className="w-full bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700">
+              <Button className="w-full bg-gradient-to-r from-primary to-primary-dark hover:brightness-110 rounded-xl transition-all duration-200">
                 Add to Booking
               </Button>
             </CardContent>

@@ -61,20 +61,20 @@ function PricingPageContent() {
       {/* Header */}
       <div className="text-center mb-8">
         <div className="flex items-center justify-center gap-3 mb-4">
-          <Plane className="h-10 w-10 text-amber-500" />
-          <h1 className="text-4xl font-bold text-white">Pricing & Inventory</h1>
+          <Plane className="h-10 w-10 text-primary animate-pulse" />
+          <h1 className="text-4xl font-bold text-white tracking-tight">Pricing & Inventory</h1>
         </div>
-        <p className="text-lg text-gray-300">
+        <p className="text-lg text-slate-400">
           Dynamic revenue management system based on airline yield optimization
         </p>
-        <Badge className="mt-2 bg-green-600 text-white">
+        <Badge className="mt-2 bg-emerald-500/20 text-emerald-400 border-emerald-500/30 rounded-full px-4 py-1.5">
           +25% Revenue Increase vs Static Pricing
         </Badge>
       </div>
 
       {/* Key Metrics */}
       <div className="grid md:grid-cols-4 gap-4">
-        <Card className="bg-gradient-to-br from-blue-600 to-blue-700 text-white">
+        <Card className="rounded-2xl bg-gradient-to-br from-blue-600 to-blue-700 text-white border-0 shadow-[0_4px_6px_rgba(0,0,0,0.1)]">
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
@@ -86,7 +86,7 @@ function PricingPageContent() {
           </CardContent>
         </Card>
 
-        <Card className="bg-gradient-to-br from-purple-600 to-purple-700 text-white">
+        <Card className="rounded-2xl bg-gradient-to-br from-purple-600 to-purple-700 text-white border-0 shadow-[0_4px_6px_rgba(0,0,0,0.1)]">
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
@@ -98,7 +98,7 @@ function PricingPageContent() {
           </CardContent>
         </Card>
 
-        <Card className="bg-gradient-to-br from-green-600 to-green-700 text-white">
+        <Card className="rounded-2xl bg-gradient-to-br from-green-600 to-green-700 text-white border-0 shadow-[0_4px_6px_rgba(0,0,0,0.1)]">
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
@@ -110,7 +110,7 @@ function PricingPageContent() {
           </CardContent>
         </Card>
 
-        <Card className="bg-gradient-to-br from-amber-600 to-amber-700 text-white">
+        <Card className="rounded-2xl bg-gradient-to-br from-amber-600 to-amber-700 text-white border-0 shadow-[0_4px_6px_rgba(0,0,0,0.1)]">
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
@@ -125,8 +125,8 @@ function PricingPageContent() {
 
       {/* Pricing Matrix */}
       {pricingTable && (
-        <Card className="bg-gray-800/50">
-          <CardHeader className="bg-gradient-to-r from-amber-600 to-orange-600 text-white">
+        <Card className="rounded-2xl bg-slate-900/60 backdrop-blur-xl border border-white/10 shadow-[0_4px_6px_rgba(0,0,0,0.1)]">
+          <CardHeader className="bg-gradient-to-r from-primary to-primary-dark text-white rounded-t-2xl">
             <CardTitle className="flex items-center gap-2">
               <BarChart3 className="h-6 w-6" />
               Dynamic Pricing Matrix (4×4 Rules)
@@ -222,22 +222,22 @@ function PricingPageContent() {
             </div>
 
             <div className="mt-6 grid md:grid-cols-2 gap-4">
-              <div className="bg-blue-900/30 border border-blue-500/30 rounded-lg p-4">
+              <div className="bg-blue-900/30 border border-blue-500/30 rounded-xl p-4">
                 <h4 className="text-sm font-semibold text-blue-400 mb-2 flex items-center gap-2">
                   <Info className="h-4 w-4" />
                   Inventory Fencing
                 </h4>
-                <p className="text-xs text-gray-400">
+                <p className="text-xs text-slate-400">
                   Only a limited percentage of rooms get each discount level. This prevents revenue dilution 
                   and ensures high-value bookings pay premium rates.
                 </p>
               </div>
-              <div className="bg-amber-900/30 border border-amber-500/30 rounded-lg p-4">
+              <div className="bg-amber-900/30 border border-amber-500/30 rounded-xl p-4">
                 <h4 className="text-sm font-semibold text-amber-400 mb-2 flex items-center gap-2">
                   <Sparkles className="h-4 w-4" />
                   AI Enhancement
                 </h4>
-                <p className="text-xs text-gray-400">
+                <p className="text-xs text-slate-400">
                   AI predicts demand for Ethiopian holidays (Meskel, Timkat) and seasons, 
                   adjusting discounts beyond the static table for optimal revenue.
                 </p>
@@ -248,8 +248,8 @@ function PricingPageContent() {
       )}
 
       {/* Fare Classes */}
-      <Card className="bg-gray-800/50">
-        <CardHeader className="bg-gradient-to-r from-purple-600 to-pink-600 text-white">
+      <Card className="rounded-2xl bg-slate-900/60 backdrop-blur-xl border border-white/10 shadow-[0_4px_6px_rgba(0,0,0,0.1)]">
+        <CardHeader className="bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-t-2xl">
           <CardTitle className="flex items-center gap-2">
             <Plane className="h-6 w-6" />
             Fare Classes (Like Airlines)
@@ -257,10 +257,10 @@ function PricingPageContent() {
         </CardHeader>
         <CardContent className="p-6">
           <div className="grid md:grid-cols-4 gap-4">
-            <div className="bg-green-900/30 border border-green-500/30 rounded-lg p-4">
-              <Badge className="bg-green-600 mb-3">SAVER</Badge>
+            <div className="bg-green-900/30 border border-green-500/30 rounded-xl p-4">
+              <Badge className="bg-green-600 mb-3 rounded-full">SAVER</Badge>
               <p className="text-sm text-white font-semibold mb-2">Up to 10% OFF</p>
-              <ul className="text-xs text-gray-400 space-y-1">
+              <ul className="text-xs text-slate-400 space-y-1">
                 <li>✗ Non-refundable</li>
                 <li>✗ Non-changeable</li>
                 <li>✓ Prepayment required</li>
@@ -268,10 +268,10 @@ function PricingPageContent() {
               </ul>
             </div>
 
-            <div className="bg-blue-900/30 border border-blue-500/30 rounded-lg p-4">
-              <Badge className="bg-blue-600 mb-3">STANDARD</Badge>
+            <div className="bg-blue-900/30 border border-blue-500/30 rounded-xl p-4">
+              <Badge className="bg-blue-600 mb-3 rounded-full">STANDARD</Badge>
               <p className="text-sm text-white font-semibold mb-2">5% OFF</p>
-              <ul className="text-xs text-gray-400 space-y-1">
+              <ul className="text-xs text-slate-400 space-y-1">
                 <li>✗ Non-refundable</li>
                 <li>✓ Changeable (fee)</li>
                 <li>✓ Prepayment required</li>
@@ -279,10 +279,10 @@ function PricingPageContent() {
               </ul>
             </div>
 
-            <div className="bg-purple-900/30 border border-purple-500/30 rounded-lg p-4">
-              <Badge className="bg-purple-600 mb-3">FLEX</Badge>
+            <div className="bg-purple-900/30 border border-purple-500/30 rounded-xl p-4">
+              <Badge className="bg-purple-600 mb-3 rounded-full">FLEX</Badge>
               <p className="text-sm text-white font-semibold mb-2">2.5% OFF</p>
-              <ul className="text-xs text-gray-400 space-y-1">
+              <ul className="text-xs text-slate-400 space-y-1">
                 <li>✓ Refundable</li>
                 <li>✓ Changeable</li>
                 <li>✓ Flexible payment</li>
@@ -290,10 +290,10 @@ function PricingPageContent() {
               </ul>
             </div>
 
-            <div className="bg-amber-900/30 border border-amber-500/30 rounded-lg p-4">
-              <Badge className="bg-amber-600 mb-3">PREMIUM</Badge>
+            <div className="bg-amber-900/30 border border-amber-500/30 rounded-xl p-4">
+              <Badge className="bg-amber-600 mb-3 rounded-full">PREMIUM</Badge>
               <p className="text-sm text-white font-semibold mb-2">Full Price</p>
-              <ul className="text-xs text-gray-400 space-y-1">
+              <ul className="text-xs text-slate-400 space-y-1">
                 <li>✓ Fully refundable</li>
                 <li>✓ Free changes</li>
                 <li>✓ No restrictions</li>

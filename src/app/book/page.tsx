@@ -7,12 +7,10 @@ import Image from "next/image";
 import { 
   Menu, X, ChevronDown, Star, MapPin, Phone, Mail, 
   Wifi, Coffee, Waves, Dumbbell, UtensilsCrossed, Sparkles,
-  Award, Users, Calendar, ArrowRight, CheckCircle2, User, LogOut,
-  Hotel, Mountain, Palmtree, Sun
+  User, LogOut, Hotel, Mountain, Palmtree, Sun, Calendar
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 
 export default function KuriftuResortPage() {
   const router = useRouter();
@@ -221,41 +219,78 @@ export default function KuriftuResortPage() {
       </section>
 
       {/* Rooms Section */}
-      <section id="rooms" className="py-24 px-4 bg-amber-50">
+      <section id="rooms" className="py-24 px-4 bg-gradient-to-b from-slate-50 to-white">
         <div className="max-w-7xl mx-auto">
           <h2 className="text-5xl font-bold text-center text-gray-900 mb-16">
             Our <span className="text-amber-600">Rooms</span>
           </h2>
           <div className="grid md:grid-cols-3 gap-8">
-            <Card className="border-2 hover:shadow-2xl transition-all">
-              <CardContent className="p-6">
-                <Hotel className="h-12 w-12 text-amber-600 mb-4" />
-                <h3 className="text-2xl font-bold mb-2">Deluxe Room</h3>
-                <p className="text-gray-600 mb-4">Spacious rooms with lake views</p>
-                <div className="text-3xl font-bold text-gray-900 mb-4">ETB 5,500</div>
-                <Button onClick={() => !isAuthenticated ? router.push("/user-login") : scrollToSection("contact")} className="w-full bg-amber-500">
+            {/* Deluxe Room */}
+            <Card className="border-2 border-gray-200 hover:border-amber-400 hover:shadow-2xl transition-all duration-300 bg-white group">
+              <CardContent className="p-8">
+                <div className="h-16 w-16 rounded-2xl bg-gradient-to-br from-amber-100 to-amber-200 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                  <Hotel className="h-8 w-8 text-amber-600" />
+                </div>
+                <h3 className="text-2xl font-bold text-gray-900 mb-3">Deluxe Room</h3>
+                <p className="text-gray-600 mb-6 text-base">Spacious rooms with stunning lake views and modern amenities</p>
+                <div className="mb-6">
+                  <div className="text-sm text-gray-500 mb-1">Starting from</div>
+                  <div className="text-4xl font-bold text-gray-900">ETB 5,500</div>
+                  <div className="text-sm text-gray-500 mt-1">per night</div>
+                </div>
+                <Button 
+                  onClick={() => !isAuthenticated ? router.push("/user-login") : scrollToSection("contact")} 
+                  className="w-full bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-semibold py-6 text-base"
+                >
                   Book Now
                 </Button>
               </CardContent>
             </Card>
-            <Card className="border-2 border-amber-400 hover:shadow-2xl transition-all">
-              <CardContent className="p-6">
-                <Star className="h-12 w-12 text-amber-600 mb-4" />
-                <h3 className="text-2xl font-bold mb-2">Executive Suite</h3>
-                <p className="text-gray-600 mb-4">Premium suite with living area</p>
-                <div className="text-3xl font-bold text-gray-900 mb-4">ETB 8,500</div>
-                <Button onClick={() => !isAuthenticated ? router.push("/user-login") : scrollToSection("contact")} className="w-full bg-amber-500">
+
+            {/* Executive Suite - Featured */}
+            <Card className="border-2 border-amber-400 hover:shadow-2xl transition-all duration-300 bg-gradient-to-br from-amber-50 to-orange-50 group relative overflow-hidden">
+              <div className="absolute top-4 right-4 z-10">
+                <div className="bg-amber-500 text-white px-3 py-1 rounded-full text-xs font-bold">
+                  POPULAR
+                </div>
+              </div>
+              <CardContent className="p-8">
+                <div className="h-16 w-16 rounded-2xl bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform shadow-lg">
+                  <Star className="h-8 w-8 text-white" />
+                </div>
+                <h3 className="text-2xl font-bold text-gray-900 mb-3">Executive Suite</h3>
+                <p className="text-gray-700 mb-6 text-base">Premium suite with separate living area and exclusive amenities</p>
+                <div className="mb-6">
+                  <div className="text-sm text-gray-600 mb-1">Starting from</div>
+                  <div className="text-4xl font-bold text-gray-900">ETB 8,500</div>
+                  <div className="text-sm text-gray-600 mt-1">per night</div>
+                </div>
+                <Button 
+                  onClick={() => !isAuthenticated ? router.push("/user-login") : scrollToSection("contact")} 
+                  className="w-full bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-semibold py-6 text-base shadow-lg"
+                >
                   Book Now
                 </Button>
               </CardContent>
             </Card>
-            <Card className="border-2 hover:shadow-2xl transition-all">
-              <CardContent className="p-6">
-                <Palmtree className="h-12 w-12 text-amber-600 mb-4" />
-                <h3 className="text-2xl font-bold mb-2">Presidential Villa</h3>
-                <p className="text-gray-600 mb-4">Ultimate luxury with private pool</p>
-                <div className="text-3xl font-bold text-gray-900 mb-4">ETB 15,000</div>
-                <Button onClick={() => !isAuthenticated ? router.push("/user-login") : scrollToSection("contact")} className="w-full bg-amber-500">
+
+            {/* Presidential Villa */}
+            <Card className="border-2 border-gray-200 hover:border-amber-400 hover:shadow-2xl transition-all duration-300 bg-white group">
+              <CardContent className="p-8">
+                <div className="h-16 w-16 rounded-2xl bg-gradient-to-br from-emerald-100 to-teal-200 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                  <Palmtree className="h-8 w-8 text-emerald-600" />
+                </div>
+                <h3 className="text-2xl font-bold text-gray-900 mb-3">Presidential Villa</h3>
+                <p className="text-gray-600 mb-6 text-base">Ultimate luxury experience with private pool and butler service</p>
+                <div className="mb-6">
+                  <div className="text-sm text-gray-500 mb-1">Starting from</div>
+                  <div className="text-4xl font-bold text-gray-900">ETB 15,000</div>
+                  <div className="text-sm text-gray-500 mt-1">per night</div>
+                </div>
+                <Button 
+                  onClick={() => !isAuthenticated ? router.push("/user-login") : scrollToSection("contact")} 
+                  className="w-full bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-semibold py-6 text-base"
+                >
                   Book Now
                 </Button>
               </CardContent>

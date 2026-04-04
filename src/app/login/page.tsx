@@ -70,17 +70,17 @@ export default function LoginPage() {
         {/* Logo */}
         <div className="text-center mb-8">
           <div className="inline-flex items-center space-x-2 mb-4">
-            <Sparkles className="h-8 w-8 text-primary" />
-            <span className="text-3xl font-bold text-white">Kuraz AI</span>
+            <Sparkles className="h-8 w-8 text-primary animate-pulse" />
+            <span className="text-3xl font-bold text-white tracking-tight">Kuraz AI</span>
           </div>
-          <p className="text-slate-400">Revenue Management Dashboard</p>
+          <p className="text-slate-400 text-lg">Revenue Management Dashboard</p>
         </div>
 
         {/* Login Card */}
-        <Card className="glass-card border-white/10 shadow-2xl">
+        <Card className="rounded-2xl bg-slate-900/60 backdrop-blur-xl border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.1)]">
           <CardHeader className="space-y-1 pb-6">
-            <CardTitle className="text-2xl text-white text-center">Welcome Back</CardTitle>
-            <CardDescription className="text-center">
+            <CardTitle className="text-2xl text-white text-center font-bold">Welcome Back</CardTitle>
+            <CardDescription className="text-center text-slate-400">
               Sign in to access the revenue management dashboard
             </CardDescription>
           </CardHeader>
@@ -95,7 +95,7 @@ export default function LoginPage() {
                     placeholder="manager@kuriftu.com"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="pl-10 bg-slate-900/50 border-white/10 text-white"
+                    className="pl-10 bg-slate-800/50 border-white/10 text-white rounded-xl h-12 focus:border-primary focus:ring-2 focus:ring-primary/20"
                     required
                   />
                 </div>
@@ -110,7 +110,7 @@ export default function LoginPage() {
                     placeholder="••••••••"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="pl-10 bg-slate-900/50 border-white/10 text-white"
+                    className="pl-10 bg-slate-800/50 border-white/10 text-white rounded-xl h-12 focus:border-primary focus:ring-2 focus:ring-primary/20"
                     required
                   />
                 </div>
@@ -126,10 +126,13 @@ export default function LoginPage() {
               <Button
                 type="submit"
                 disabled={isLoading}
-                className="w-full bg-primary hover:bg-primary/90 text-white py-6 text-base"
+                className="w-full bg-gradient-to-r from-primary to-primary-dark hover:brightness-110 text-white py-6 text-base rounded-xl font-semibold shadow-[0_2px_4px_rgba(59,130,246,0.2)] transition-all duration-200 active:scale-[0.98]"
               >
                 {isLoading ? (
-                  "Authenticating..."
+                  <div className="flex items-center justify-center gap-2">
+                    <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent"></div>
+                    Authenticating...
+                  </div>
                 ) : (
                   <>
                     Sign In
@@ -149,7 +152,7 @@ export default function LoginPage() {
                   <button
                     key={user.email}
                     onClick={() => quickLogin(user)}
-                    className="w-full text-left p-3 rounded-lg border border-white/5 bg-white/5 hover:bg-primary/10 hover:border-primary/20 transition-all group"
+                    className="w-full text-left p-3 rounded-xl border border-white/5 bg-white/5 hover:bg-primary/10 hover:border-primary/20 transition-all duration-200 group hover:-translate-y-0.5"
                   >
                     <div className="flex justify-between items-center">
                       <div>
@@ -158,7 +161,7 @@ export default function LoginPage() {
                         </div>
                         <div className="text-xs text-slate-400">{user.email}</div>
                       </div>
-                      <Badge variant="outline" className="bg-white/5 border-white/10 text-slate-300 text-xs">
+                      <Badge variant="outline" className="bg-white/5 border-white/10 text-slate-300 text-xs rounded-full px-3 py-1">
                         {user.role}
                       </Badge>
                     </div>

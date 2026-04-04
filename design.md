@@ -1,4 +1,143 @@
-# Kuraz AI - Modern UI/UX Design System
+# Kuraz AI - AI-Powered Revenue Management System
+
+## Project Overview
+
+### What is Kuraz AI?
+
+Kuraz AI is an intelligent revenue management system designed specifically for Ethiopian resorts and hotels. Built for the Ethiopia Hospitality Hackathon 2026, it brings airline-style dynamic pricing, AI-powered guest segmentation, and personalized package recommendations to the hospitality industry.
+
+### The Problem
+
+Ethiopian resorts face significant revenue optimization challenges:
+- **Static Pricing**: Fixed room rates regardless of demand, seasonality, or events
+- **Missed Upsell Opportunities**: No systematic approach to package recommendations
+- **Poor Guest Understanding**: Limited insight into guest preferences and willingness to pay
+- **Manual Processes**: Time-consuming pricing decisions without data-driven insights
+- **Revenue Leakage**: Leaving 20-30% of potential revenue on the table
+
+### The Solution
+
+Kuraz AI implements three intelligent engines working in harmony:
+
+1. **Dynamic Pricing Engine**
+   - Airline-style yield management with 7-tier occupancy multipliers
+   - Ethiopian seasonality awareness (Timkat, Easter, New Year)
+   - Event-driven pricing adjustments (+70% during major festivals)
+   - Saver/Standard/Premium fare classes
+   - Real-time competitor benchmarking
+   - Automatic inventory fencing
+
+2. **Guest Segmentation AI**
+   - Real-time classification into 8 distinct segments
+   - International vs. domestic pattern recognition
+   - Business, honeymoon, family, budget traveler detection
+   - Price sensitivity scoring (0.3 to 1.0)
+   - Package affinity prediction
+   - Behavioral analysis based on booking patterns
+
+3. **Package Recommender**
+   - 10 pre-built service bundles (Romance, Family, Business, Adventure, etc.)
+   - Dynamic discounting (5-25%) based on segment and occupancy
+   - Contextual recommendations at booking time
+   - Average revenue uplift: ETB 3,300 per booking
+   - 60% acceptance rate in simulations
+
+### Key Features
+
+- **Real-time Dynamic Pricing**: Prices adjust automatically based on occupancy, lead time, and events
+- **AI-Powered Insights**: Dashboard with actionable recommendations and trend analysis
+- **Guest Experience Portal**: Beautiful booking interface with personalized package offers
+- **Live Simulation**: Watch the AI make pricing decisions in real-time
+- **Comprehensive Analytics**: KPIs, heatmaps, revenue charts, and package performance metrics
+- **Ethiopian Context**: Built-in awareness of local holidays, events, and travel patterns
+
+### Technology Stack
+
+- **Frontend**: Next.js 14, React 18, TypeScript
+- **Styling**: Tailwind CSS, shadcn/ui components
+- **Charts**: Recharts for data visualization
+- **Icons**: Lucide React
+- **Deployment**: Vercel (optimized for edge functions)
+
+### Target Users
+
+1. **Hotel Managers**: Monitor revenue, adjust strategies, view AI insights
+2. **Revenue Managers**: Deep dive into pricing analytics and optimization
+3. **Guests**: Experience seamless booking with personalized recommendations
+4. **Developers**: Integrate with existing PMS systems via API
+
+### Measurable Impact
+
+Based on synthetic Ethiopian resort data:
+- **+25% Total Revenue Increase**: From ETB 13,500 to ETB 16,850 per 100 room nights
+- **+13% from Dynamic Pricing**: Optimized rate mix (30% Saver, 45% Standard, 25% Premium)
+- **+ETB 3,300 from Packages**: 60% acceptance rate on AI recommendations
+- **8 Guest Segments**: Precise targeting for maximum conversion
+- **Real-time Optimization**: Prices update every booking cycle
+
+### Project Structure
+
+```
+src/
+├── app/                          # Next.js app router pages
+│   ├── landing/                  # Public landing page
+│   ├── login/                    # Manager authentication
+│   ├── dashboard/                # Revenue management dashboard
+│   ├── book/                     # Guest booking portal
+│   ├── simulate/                 # AI pricing simulator
+│   ├── packages/                 # Package management
+│   ├── pricing/                  # Pricing configuration
+│   └── admin-*/                  # Admin panels
+├── components/
+│   ├── dashboard/                # Dashboard widgets
+│   │   ├── KPICards.tsx         # Revenue metrics
+│   │   ├── RevenueChart.tsx     # Trend visualization
+│   │   ├── PricingHeatmap.tsx   # Occupancy-based pricing
+│   │   ├── AIInsights.tsx       # AI recommendations
+│   │   └── PackageMetrics.tsx   # Package performance
+│   ├── booking/                  # Booking flow components
+│   └── ui/                       # Reusable UI components
+└── lib/
+    ├── api.ts                    # API integration layer
+    └── utils.ts                  # Utility functions
+```
+
+### User Journeys
+
+**Manager Journey**
+1. Login to dashboard
+2. View KPIs (revenue, occupancy, ADR, RevPAR)
+3. Analyze pricing heatmap and trends
+4. Review AI insights and recommendations
+5. Monitor package performance
+6. Adjust pricing strategies
+
+**Guest Journey**
+1. Visit booking portal
+2. Select dates and room type
+3. View dynamically priced options (Saver/Standard/Premium)
+4. AI classifies guest segment
+5. Receive personalized package recommendations
+6. Complete booking with optimal revenue capture
+
+**Simulation Journey**
+1. Access AI simulator
+2. Input booking parameters
+3. Watch AI calculate pricing in real-time
+4. See multiplier breakdowns
+5. Understand segment classification
+6. View package recommendations
+
+### Future Enhancements
+
+- **Machine Learning Integration**: Train models on real booking data
+- **Multi-property Support**: Manage multiple resorts from one dashboard
+- **Mobile App**: Native iOS/Android apps for managers and guests
+- **API Marketplace**: Third-party integrations (PMS, CRM, payment gateways)
+- **Advanced Analytics**: Predictive forecasting, competitor intelligence
+- **Internationalization**: Support for multiple languages and currencies
+
+---
 
 ## Design Philosophy
 

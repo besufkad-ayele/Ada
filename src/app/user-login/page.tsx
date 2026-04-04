@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { LogIn, ArrowRight, Sparkles } from "lucide-react";
+import { LogIn, ArrowRight, Sparkles, AlertCircle } from "lucide-react";
 import { API_BASE } from "@/lib/api";
 import Link from "next/link";
 
@@ -51,59 +51,60 @@ export default function UserLoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-amber-50 via-white to-orange-50 flex items-center justify-center px-6">
+    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 flex items-center justify-center px-6">
       <div className="max-w-md w-full">
         {/* Header */}
         <div className="text-center mb-8">
           <div className="flex items-center justify-center gap-2 mb-4">
-            <Sparkles className="h-8 w-8 text-amber-600" />
-            <h1 className="text-4xl font-bold text-gray-900">Welcome Back</h1>
+            <Sparkles className="h-8 w-8 text-primary animate-pulse" />
+            <h1 className="text-4xl font-bold text-white tracking-tight">Welcome Back</h1>
           </div>
-          <p className="text-gray-700 text-lg">
+          <p className="text-slate-400 text-lg">
             Log in to continue your booking
           </p>
         </div>
 
-        <Card className="shadow-2xl border-0">
-          <CardHeader className="bg-gradient-to-r from-amber-500 to-orange-500 text-white">
+        <Card className="rounded-2xl bg-slate-900/60 backdrop-blur-xl border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.1)]">
+          <CardHeader className="bg-gradient-to-r from-primary to-primary-dark text-white rounded-t-2xl">
             <CardTitle className="text-2xl flex items-center gap-2">
               <LogIn className="h-6 w-6" />
               Log In
             </CardTitle>
-            <p className="text-amber-50 mt-2">Enter your credentials</p>
+            <p className="text-blue-100 mt-2">Enter your credentials</p>
           </CardHeader>
           
           <CardContent className="p-8">
             {error && (
-              <div className="bg-red-50 border-2 border-red-200 text-red-800 px-4 py-3 rounded-lg mb-6">
-                {error}
+              <div className="bg-red-500/10 border border-red-500/20 rounded-xl px-4 py-3 mb-6 flex items-start gap-2">
+                <AlertCircle className="h-4 w-4 text-red-400 mt-0.5 shrink-0" />
+                <p className="text-sm text-red-400">{error}</p>
               </div>
             )}
 
             <form onSubmit={handleSubmit} className="space-y-6">
               <div>
-                <label className="text-sm font-semibold text-gray-800 mb-2 block">
+                <label className="text-sm font-semibold text-slate-300 mb-2 block">
                   Email
                 </label>
                 <Input
                   type="email"
                   value={credentials.email}
                   onChange={(e) => setCredentials({ ...credentials, email: e.target.value })}
-                  className="border-2 border-gray-300 focus:border-amber-500 text-gray-900"
+                  className="bg-slate-800/50 border-white/10 text-white rounded-xl h-12 focus:border-primary focus:ring-2 focus:ring-primary/20"
                   placeholder="john@example.com"
                   required
                 />
               </div>
 
               <div>
-                <label className="text-sm font-semibold text-gray-800 mb-2 block">
+                <label className="text-sm font-semibold text-slate-300 mb-2 block">
                   Password
                 </label>
                 <Input
                   type="password"
                   value={credentials.password}
                   onChange={(e) => setCredentials({ ...credentials, password: e.target.value })}
-                  className="border-2 border-gray-300 focus:border-amber-500 text-gray-900"
+                  className="bg-slate-800/50 border-white/10 text-white rounded-xl h-12 focus:border-primary focus:ring-2 focus:ring-primary/20"
                   placeholder="Enter your password"
                   required
                 />
@@ -112,10 +113,13 @@ export default function UserLoginPage() {
               <Button
                 type="submit"
                 disabled={isProcessing}
-                className="w-full bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white py-6 text-lg font-bold shadow-lg"
+                className="w-full bg-gradient-to-r from-primary to-primary-dark hover:brightness-110 text-white py-6 text-lg font-bold rounded-xl shadow-[0_2px_4px_rgba(59,130,246,0.2)] transition-all duration-200 active:scale-[0.98]"
               >
                 {isProcessing ? (
-                  "Logging in..."
+                  <div className="flex items-center justify-center gap-2">
+                    <div className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent"></div>
+                    Logging in...
+                  </div>
                 ) : (
                   <>
                     Log In
@@ -126,14 +130,14 @@ export default function UserLoginPage() {
             </form>
 
             <div className="mt-6 text-center space-y-3">
-              <p className="text-gray-700">
+              <p className="text-slate-400">
                 Don't have an account?{" "}
-                <Link href="/signup" className="text-amber-600 font-semibold hover:underline">
+                <Link href="/signup" className="text-primary font-semibold hover:underline">
                   Sign Up
                 </Link>
               </p>
-              <p className="text-sm text-gray-600">
-                <Link href="/login" className="text-amber-600 hover:underline">
+              <p className="text-sm text-slate-500">
+                <Link href="/login" className="text-primary hover:underline">
                   Admin Login
                 </Link>
               </p>

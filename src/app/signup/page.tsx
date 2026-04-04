@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { UserPlus, ArrowRight, Sparkles } from "lucide-react";
+import { UserPlus, ArrowRight, Sparkles, AlertCircle } from "lucide-react";
 import { API_BASE } from "@/lib/api";
 import Link from "next/link";
 
@@ -78,87 +78,88 @@ export default function SignupPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-amber-50 via-white to-orange-50 flex items-center justify-center px-6 py-12">
+    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 flex items-center justify-center px-6 py-12">
       <div className="max-w-md w-full">
         {/* Header */}
         <div className="text-center mb-8">
           <div className="flex items-center justify-center gap-2 mb-4">
-            <Sparkles className="h-8 w-8 text-amber-600" />
-            <h1 className="text-4xl font-bold text-gray-900">Join Us</h1>
+            <Sparkles className="h-8 w-8 text-primary animate-pulse" />
+            <h1 className="text-4xl font-bold text-white tracking-tight">Join Us</h1>
           </div>
-          <p className="text-gray-700 text-lg">
+          <p className="text-slate-400 text-lg">
             Create your account to start booking
           </p>
         </div>
 
-        <Card className="shadow-2xl border-0">
-          <CardHeader className="bg-gradient-to-r from-amber-500 to-orange-500 text-white">
+        <Card className="rounded-2xl bg-slate-900/60 backdrop-blur-xl border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.1)]">
+          <CardHeader className="bg-gradient-to-r from-primary to-primary-dark text-white rounded-t-2xl">
             <CardTitle className="text-2xl flex items-center gap-2">
               <UserPlus className="h-6 w-6" />
               Sign Up
             </CardTitle>
-            <p className="text-amber-50 mt-2">Fill in your details below</p>
+            <p className="text-blue-100 mt-2">Fill in your details below</p>
           </CardHeader>
           
           <CardContent className="p-8">
             {error && (
-              <div className="bg-red-50 border-2 border-red-200 text-red-800 px-4 py-3 rounded-lg mb-6">
-                {error}
+              <div className="bg-red-500/10 border border-red-500/20 rounded-xl px-4 py-3 mb-6 flex items-start gap-2">
+                <AlertCircle className="h-4 w-4 text-red-400 mt-0.5 shrink-0" />
+                <p className="text-sm text-red-400">{error}</p>
               </div>
             )}
 
             <form onSubmit={handleSubmit} className="space-y-5">
               <div>
-                <label className="text-sm font-semibold text-gray-800 mb-2 block">
+                <label className="text-sm font-semibold text-slate-300 mb-2 block">
                   Full Name
                 </label>
                 <Input
                   type="text"
                   value={formData.full_name}
                   onChange={(e) => setFormData({ ...formData, full_name: e.target.value })}
-                  className="border-2 border-gray-300 focus:border-amber-500 text-gray-900"
+                  className="bg-slate-800/50 border-white/10 text-white rounded-xl h-12 focus:border-primary focus:ring-2 focus:ring-primary/20"
                   placeholder="John Doe"
                   required
                 />
               </div>
 
               <div>
-                <label className="text-sm font-semibold text-gray-800 mb-2 block">
+                <label className="text-sm font-semibold text-slate-300 mb-2 block">
                   Email
                 </label>
                 <Input
                   type="email"
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  className="border-2 border-gray-300 focus:border-amber-500 text-gray-900"
+                  className="bg-slate-800/50 border-white/10 text-white rounded-xl h-12 focus:border-primary focus:ring-2 focus:ring-primary/20"
                   placeholder="john@example.com"
                   required
                 />
               </div>
 
               <div>
-                <label className="text-sm font-semibold text-gray-800 mb-2 block">
+                <label className="text-sm font-semibold text-slate-300 mb-2 block">
                   Phone Number
                 </label>
                 <Input
                   type="tel"
                   value={formData.phone_number}
                   onChange={(e) => setFormData({ ...formData, phone_number: e.target.value })}
-                  className="border-2 border-gray-300 focus:border-amber-500 text-gray-900"
+                  className="bg-slate-800/50 border-white/10 text-white rounded-xl h-12 focus:border-primary focus:ring-2 focus:ring-primary/20"
                   placeholder="+251 912 345 678"
                   required
                 />
               </div>
 
               <div>
-                <label className="text-sm font-semibold text-gray-800 mb-2 block">
+                <label className="text-sm font-semibold text-slate-300 mb-2 block">
                   Location
                 </label>
                 <Input
                   type="text"
                   value={formData.location}
                   onChange={(e) => setFormData({ ...formData, location: e.target.value })}
-                  className="border-2 border-gray-300 focus:border-amber-500 text-gray-900"
+                  className="bg-slate-800/50 border-white/10 text-white rounded-xl h-12 focus:border-primary focus:ring-2 focus:ring-primary/20"
                   placeholder="Addis Ababa, Ethiopia"
                   required
                 />
@@ -166,14 +167,14 @@ export default function SignupPage() {
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="text-sm font-semibold text-gray-800 mb-2 block">
+                  <label className="text-sm font-semibold text-slate-300 mb-2 block">
                     Age
                   </label>
                   <Input
                     type="number"
                     value={formData.age}
                     onChange={(e) => setFormData({ ...formData, age: e.target.value })}
-                    className="border-2 border-gray-300 focus:border-amber-500 text-gray-900"
+                    className="bg-slate-800/50 border-white/10 text-white rounded-xl h-12 focus:border-primary focus:ring-2 focus:ring-primary/20"
                     placeholder="25"
                     min="18"
                     max="120"
@@ -182,13 +183,13 @@ export default function SignupPage() {
                 </div>
 
                 <div>
-                  <label className="text-sm font-semibold text-gray-800 mb-2 block">
+                  <label className="text-sm font-semibold text-slate-300 mb-2 block">
                     Gender
                   </label>
                   <select
                     value={formData.sex}
                     onChange={(e) => setFormData({ ...formData, sex: e.target.value })}
-                    className="w-full h-10 px-3 border-2 border-gray-300 focus:border-amber-500 text-gray-900 rounded-md"
+                    className="w-full h-12 px-3 bg-slate-800/50 border border-white/10 text-white rounded-xl focus:border-primary focus:ring-2 focus:ring-primary/20"
                     required
                   >
                     <option value="Male">Male</option>
@@ -199,28 +200,28 @@ export default function SignupPage() {
               </div>
 
               <div>
-                <label className="text-sm font-semibold text-gray-800 mb-2 block">
+                <label className="text-sm font-semibold text-slate-300 mb-2 block">
                   Password
                 </label>
                 <Input
                   type="password"
                   value={formData.password}
                   onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                  className="border-2 border-gray-300 focus:border-amber-500 text-gray-900"
+                  className="bg-slate-800/50 border-white/10 text-white rounded-xl h-12 focus:border-primary focus:ring-2 focus:ring-primary/20"
                   placeholder="At least 6 characters"
                   required
                 />
               </div>
 
               <div>
-                <label className="text-sm font-semibold text-gray-800 mb-2 block">
+                <label className="text-sm font-semibold text-slate-300 mb-2 block">
                   Confirm Password
                 </label>
                 <Input
                   type="password"
                   value={formData.confirmPassword}
                   onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
-                  className="border-2 border-gray-300 focus:border-amber-500 text-gray-900"
+                  className="bg-slate-800/50 border-white/10 text-white rounded-xl h-12 focus:border-primary focus:ring-2 focus:ring-primary/20"
                   placeholder="Re-enter password"
                   required
                 />
@@ -229,10 +230,13 @@ export default function SignupPage() {
               <Button
                 type="submit"
                 disabled={isProcessing}
-                className="w-full bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white py-6 text-lg font-bold shadow-lg"
+                className="w-full bg-gradient-to-r from-primary to-primary-dark hover:brightness-110 text-white py-6 text-lg font-bold rounded-xl shadow-[0_2px_4px_rgba(59,130,246,0.2)] transition-all duration-200 active:scale-[0.98]"
               >
                 {isProcessing ? (
-                  "Creating Account..."
+                  <div className="flex items-center justify-center gap-2">
+                    <div className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent"></div>
+                    Creating Account...
+                  </div>
                 ) : (
                   <>
                     Create Account
@@ -243,14 +247,14 @@ export default function SignupPage() {
             </form>
 
             <div className="mt-6 text-center space-y-3">
-              <p className="text-gray-700">
+              <p className="text-slate-400">
                 Already have an account?{" "}
-                <Link href="/user-login" className="text-amber-600 font-semibold hover:underline">
+                <Link href="/user-login" className="text-primary font-semibold hover:underline">
                   Log In
                 </Link>
               </p>
-              <p className="text-sm text-gray-600">
-                <Link href="/login" className="text-amber-600 hover:underline">
+              <p className="text-sm text-slate-500">
+                <Link href="/login" className="text-primary hover:underline">
                   Admin Login
                 </Link>
               </p>
