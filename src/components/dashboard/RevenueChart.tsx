@@ -4,7 +4,13 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 import { format, parseISO } from "date-fns";
 
-export function RevenueChart({ data }: { data: any[] }) {
+interface RevenueData {
+  date: string;
+  room_revenue: number;
+  package_revenue: number;
+}
+
+export function RevenueChart({ data }: { data: RevenueData[] }) {
   if (!data || data.length === 0) return (
     <div className="glass-card shadow-lg border-white/5 h-full flex items-center justify-center min-h-[300px]">
       <p className="text-muted-foreground text-sm">No revenue data available yet. Seed the database first.</p>
@@ -58,8 +64,8 @@ export function RevenueChart({ data }: { data: any[] }) {
                   color: '#fff',
                   boxShadow: '0 10px 30px -10px rgba(0,0,0,0.5)'
                 }}
-                labelFormatter={(str) => format(parseISO(str), "MMM d, yyyy")}
-                formatter={(value: any, name: any) => [
+                labelFormatter={(str) => format(parseISO(str as string), "MMM d, yyyy")}
+                formatter={(value: number | string, name: string) => [
                   <span key={name} className="font-semibold text-white">ETB {Number(value || 0).toLocaleString()}</span>, 
                   <span key={name+"_label"} className="text-slate-300">{name === "room_revenue" ? "Room" : "Package"} Revenue</span>
                 ]}

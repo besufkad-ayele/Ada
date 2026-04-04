@@ -3,7 +3,16 @@ import { Badge } from "@/components/ui/badge";
 import { format, parseISO } from "date-fns";
 import { CalendarDays, AlertCircle } from "lucide-react";
 
-export function PricingHeatmap({ data }: { data: any[] }) {
+interface PricingData {
+  date: string;
+  room_type_name: string;
+  rate_etb: number;
+  occupancy_rate: number;
+  demand_level: string;
+  fare_class_active: string;
+}
+
+export function PricingHeatmap({ data }: { data: PricingData[] }) {
   if (!data || data.length === 0) return (
     <div className="glass-card shadow-lg border-white/5 flex items-center justify-center min-h-[200px]">
       <p className="text-muted-foreground text-sm">No pricing data available. Seed the database first.</p>
@@ -73,7 +82,7 @@ export function PricingHeatmap({ data }: { data: any[] }) {
               </tr>
             </thead>
             <tbody className="divide-y divide-white/5">
-              {roomTypes.map((rtName, i) => (
+              {roomTypes.map((rtName) => (
                 <tr key={rtName} className="group hover:bg-white/[0.02] transition-colors duration-300">
                   <td className="p-4 font-bold text-white tracking-wide border-r border-white/5 group-hover:bg-transparent bg-black/10">
                     {rtName}

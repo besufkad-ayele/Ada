@@ -32,7 +32,7 @@ export function RoomsShowcase() {
           // Fetch current pricing for each room
           const today = new Date().toISOString().split('T')[0];
           const roomsWithPricing = await Promise.all(
-            data.map(async (room: any) => {
+            data.map(async (room: RoomType) => {
               try {
                 const priceRes = await fetch(`${API_BASE}/api/pricing/optimal-price`, {
                   method: 'POST',

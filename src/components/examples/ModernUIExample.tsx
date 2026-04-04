@@ -12,7 +12,6 @@ import {
   Calendar,
   Sparkles,
   ArrowUpRight,
-  ArrowDownRight,
 } from "lucide-react";
 import { 
   GlassCard, 

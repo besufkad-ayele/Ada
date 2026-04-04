@@ -10,8 +10,6 @@ import {
   CalendarDays,
   Sparkles,
   PackageCheck,
-  Building2,
-  Globe,
   MessageSquare,
   LogOut,
   Users,
@@ -33,10 +31,15 @@ const navigation = [
   { name: "Configuration", href: "/settings", icon: Settings },
 ];
 
+interface User {
+  name: string;
+  role: string;
+}
+
 export function AppSidebar() {
   const pathname = usePathname();
   const router = useRouter();
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<User | null>(null);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {

@@ -2,7 +2,17 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { BrainCircuit, TrendingUp, AlertTriangle, Info } from "lucide-react";
 
-export function AIInsights({ insights }: { insights: any[] }) {
+interface Insight {
+  id: number;
+  severity: string;
+  title: string;
+  message: string;
+  category: string;
+  metric_impact: string;
+  suggested_action: string;
+}
+
+export function AIInsights({ insights }: { insights: Insight[] }) {
   if (!insights || insights.length === 0) return (
     <div className="glass-card shadow-lg border-white/5 h-full flex items-center justify-center min-h-[200px]">
       <p className="text-muted-foreground text-sm">No insights yet. Seed the database to generate AI recommendations.</p>
