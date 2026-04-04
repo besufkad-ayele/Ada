@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
+import { motion, AnimatePresence } from "framer-motion";
 import { 
   ArrowRight, BarChart3, Brain, Sparkles, TrendingUp, Users, Zap, 
   Star, CheckCircle2, Globe, Calendar, DollarSign, Target, 
@@ -10,1037 +11,413 @@ import {
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 
+// Reusable animation variants
+const fadeInUp = {
+  hidden: { opacity: 0, y: 40 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" as const } }
+};
+
+const staggerContainer = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.15 }
+  }
+};
+
 export default function LandingPage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [isVisible, setIsVisible] = useState({});
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
-    };
+    const handleScroll = () => setScrolled(window.scrollY > 50);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setIsVisible((prev) => ({
-              ...prev,
-              [entry.target.id]: true,
-            }));
-          }
-        });
-      },
-      { threshold: 0.1 }
-    );
-
-    const sections = document.querySelectorAll('section[id]');
-    sections.forEach((section) => observer.observe(section));
-
-    return () => observer.disconnect();
-  }, []);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 1500);
+    const timer = setTimeout(() => setIsLoading(false), 2000);
     return () => clearTimeout(timer);
   }, []);
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 flex items-center justify-center overflow-hidden">
-        <div className="relative">
-          {/* Animated background particles */}
-          <div className="absolute inset-0 overflow-hidden">
-            <div className="absolute top-0 left-0 w-32 h-32 bg-primary/20 rounded-full blur-2xl animate-pulse"></div>
-            <div className="absolute bottom-0 right-0 w-48 h-48 bg-amber-500/20 rounded-full blur-2xl animate-pulse delay-1000"></div>
+      <div className="min-h-screen bg-[#020817] flex items-center justify-center overflow-hidden">
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5 }}
+          className="relative flex flex-col items-center"
+        >
+          <div className="relative w-24 h-24 flex items-center justify-center">
+            <motion.div 
+              animate={{ rotate: 360 }} 
+              transition={{ repeat: Infinity, duration: 3, ease: "linear" }}
+              className="absolute inset-0 border-t-2 border-r-2 border-primary rounded-full"
+            />
+            <motion.div 
+              animate={{ rotate: -360 }} 
+              transition={{ repeat: Infinity, duration: 4, ease: "linear" }}
+              className="absolute inset-2 border-b-2 border-l-2 border-amber-400 rounded-full"
+            />
+            <Sparkles className="h-8 w-8 text-white animate-pulse" />
           </div>
-          
-          {/* Futuristic loader */}
-          <div className="relative z-10 flex flex-col items-center space-y-8">
-            <div className="relative">
-              <div className="w-20 h-20 border-4 border-primary/20 rounded-full animate-spin-slow"></div>
-              <div className="absolute inset-0 w-20 h-20 border-4 border-transparent border-t-primary rounded-full animate-spin"></div>
-              <div className="absolute inset-0 w-20 h-20 border-2 border-transparent border-r-amber-400 rounded-full animate-spin-slow"></div>
-              <Sparkles className="absolute inset-0 m-auto h-8 w-8 text-primary animate-pulse-slow" />
-            </div>
-            
-            <div className="space-y-2">
-              <div className="h-2 w-48 bg-slate-800 rounded-full overflow-hidden">
-                <div className="h-full w-3/4 bg-gradient-to-r from-primary to-amber-400 rounded-full animate-shimmer"></div>
-              </div>
-              <div className="h-2 w-32 bg-slate-800 rounded-full overflow-hidden">
-                <div className="h-full w-1/2 bg-gradient-to-r from-primary to-amber-400 rounded-full animate-shimmer delay-500"></div>
-              </div>
-            </div>
-            
-            <p className="text-slate-400 text-sm animate-pulse-slow">Initializing Kuraz AI...</p>
-          </div>
-        </div>
+          <motion.p 
+            animate={{ opacity: [0.5, 1, 0.5] }} 
+            transition={{ repeat: Infinity, duration: 1.5 }}
+            className="mt-8 text-slate-400 font-mono tracking-widest text-sm uppercase"
+          >
+            Initializing Kuraz AI
+          </motion.p>
+        </motion.div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 overflow-x-hidden relative">
-      {/* Advanced Animated Background */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        {/* Floating orbs with complex animations */}
-        <div className="absolute top-1/4 -left-48 w-96 h-96 bg-primary/10 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute bottom-1/4 -right-48 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
-        <div className="absolute top-1/2 left-1/3 w-64 h-64 bg-amber-500/5 rounded-full blur-2xl animate-bounce delay-500"></div>
-        <div className="absolute bottom-1/3 right-1/4 w-80 h-80 bg-purple-500/5 rounded-full blur-2xl animate-ping delay-2000"></div>
-        
-        {/* Animated gradient mesh */}
-        <div className="absolute inset-0 opacity-30">
-          <div className="absolute inset-0 bg-gradient-to-r from-primary/20 via-transparent to-amber-500/20 animate-gradient"></div>
-        </div>
-        
-        {/* Particle grid effect */}
-        <div className="absolute inset-0" style={{
-          backgroundImage: `radial-gradient(circle at 1px 1px, rgba(59, 130, 246, 0.1) 1px, transparent 1px)`,
-          backgroundSize: '50px 50px'
-        }}></div>
+    <div className="min-h-screen bg-[#020817] text-slate-50 overflow-x-hidden selection:bg-primary/30 selection:text-white">
+      {/* Dynamic Background */}
+      <div className="fixed inset-0 z-0 pointer-events-none">
+        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-primary/20 rounded-full blur-[120px]" />
+        <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-amber-500/10 rounded-full blur-[120px]" />
+        <div className="absolute top-[40%] left-[60%] w-[30%] h-[30%] bg-blue-600/10 rounded-full blur-[100px]" />
+        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03] mix-blend-overlay"></div>
       </div>
 
-      {/* Header */}
-      <header className={`fixed top-0 w-full z-50 transition-all duration-300 ${
-        scrolled ? 'bg-slate-950/95 backdrop-blur-xl border-b border-white/10 shadow-lg' : 'bg-transparent'
+      {/* Navbar */}
+      <header className={`fixed top-0 w-full z-50 transition-all duration-500 ${
+        scrolled ? 'bg-slate-950/80 backdrop-blur-xl border-b border-white/5 py-3 shadow-2xl' : 'bg-transparent py-5'
       }`}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-4">
-            <div className="flex items-center space-x-3 group">
-              <div className="relative">
-                <div className="absolute inset-0 bg-primary/30 blur-xl animate-pulse-glow group-hover:scale-150 transition-transform duration-500"></div>
-                <Sparkles className="relative h-7 w-7 text-primary animate-spin-slow" />
-              </div>
-              <span className="text-2xl font-bold bg-gradient-to-r from-white via-primary to-amber-400 bg-clip-text text-transparent bg-[length:200%_auto] animate-gradient font-tracking-wide">
-                Kuraz AI
-              </span>
+        <div className="max-w-7xl mx-auto px-6 lg:px-8 flex justify-between items-center">
+          <Link href="/" className="flex items-center space-x-2 group">
+            <div className="relative flex items-center justify-center h-10 w-10 rounded-xl bg-gradient-to-br from-primary/20 to-primary/5 border border-primary/20 group-hover:border-primary/50 transition-colors">
+              <Sparkles className="h-5 w-5 text-primary" />
             </div>
-            
-            <nav className="hidden lg:flex space-x-8 text-sm font-medium">
-              <a href="#features" className="text-slate-300 hover:text-primary transition-colors">Features</a>
-              <a href="#how-it-works" className="text-slate-300 hover:text-primary transition-colors">How It Works</a>
-              <a href="#demo" className="text-slate-300 hover:text-primary transition-colors">Demo</a>
-              <a href="#impact" className="text-slate-300 hover:text-primary transition-colors">Impact</a>
-            </nav>
-            
-            <div className="hidden lg:flex gap-3">
-              <Link href="/book">
-                <Button variant="outline" className="border-white/20 text-white hover:bg-white/10 hover:border-primary/50 transition-all">
-                  Book a Stay
-                </Button>
-              </Link>
-              <Link href="/login">
-                <Button className="bg-gradient-to-r from-primary to-amber-500 hover:from-primary/90 hover:to-amber-500/90 text-white shadow-lg shadow-primary/25">
-                  Dashboard Login
-                </Button>
-              </Link>
-            </div>
-
-            <button 
-              className="lg:hidden text-white"
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            >
-              {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-            </button>
+            <span className="text-xl font-bold tracking-tight">Kuraz<span className="text-primary">AI</span></span>
+          </Link>
+          
+          <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-slate-300">
+            {['Features', 'How It Works', 'Impact'].map((item) => (
+              <a key={item} href={`#${item.toLowerCase().replace(/ /g, '-')}`} className="hover:text-white transition-colors">
+                {item}
+              </a>
+            ))}
+          </nav>
+          
+          <div className="hidden md:flex gap-4">
+            <Link href="/book">
+              <Button variant="ghost" className="hover:bg-white/5">Book Stay</Button>
+            </Link>
+            <Link href="/login">
+              <Button className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-[0_0_20px_rgba(59,130,246,0.3)]">
+                Dashboard Login
+              </Button>
+            </Link>
           </div>
+
+          <button className="md:hidden text-slate-300" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
+            {mobileMenuOpen ? <X /> : <Menu />}
+          </button>
         </div>
 
         {/* Mobile Menu */}
-        {mobileMenuOpen && (
-          <div className="lg:hidden bg-slate-950/98 backdrop-blur-xl border-t border-white/10">
-            <div className="px-4 py-6 space-y-4">
-              <a href="#features" className="block text-slate-300 hover:text-primary transition-colors py-2">Features</a>
-              <a href="#how-it-works" className="block text-slate-300 hover:text-primary transition-colors py-2">How It Works</a>
-              <a href="#demo" className="block text-slate-300 hover:text-primary transition-colors py-2">Demo</a>
-              <a href="#impact" className="block text-slate-300 hover:text-primary transition-colors py-2">Impact</a>
-              <div className="pt-4 space-y-3">
-                <Link href="/book" className="block">
-                  <Button variant="outline" className="w-full border-white/20 text-white hover:bg-white/10">
-                    Book a Stay
-                  </Button>
-                </Link>
-                <Link href="/login" className="block">
-                  <Button className="w-full bg-gradient-to-r from-primary to-amber-500">
-                    Dashboard Login
-                  </Button>
-                </Link>
+        <AnimatePresence>
+          {mobileMenuOpen && (
+            <motion.div 
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              className="md:hidden bg-slate-950 border-b border-white/10 overflow-hidden"
+            >
+              <div className="px-6 py-4 flex flex-col gap-4">
+                {['Features', 'How It Works', 'Impact'].map((item) => (
+                  <a key={item} href={`#${item.toLowerCase().replace(/ /g, '-')}`} className="text-slate-300 hover:text-white py-2" onClick={() => setMobileMenuOpen(false)}>
+                    {item}
+                  </a>
+                ))}
+                <div className="h-px bg-white/10 w-full my-2" />
+                <Button variant="outline" className="w-full justify-center">Book Stay</Button>
+                <Button className="w-full justify-center bg-primary text-white">Dashboard Login</Button>
               </div>
-            </div>
-          </div>
-        )}
+            </motion.div>
+          )}
+        </AnimatePresence>
       </header>
 
-      {/* Hero Section */}
-      <section className="relative pt-32 pb-20 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center relative z-10">
-            {/* Badge */}
-            <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-primary/20 to-amber-500/20 border border-primary/30 text-primary text-sm font-semibold mb-8 animate-fade-in shadow-lg shadow-primary/10">
-              <Award className="h-4 w-4" />
-              Ethiopia Hospitality Hackathon 2026
-            </div>
+      <main className="relative z-10">
+        {/* Hero Section */}
+        <section className="relative pt-40 pb-20 md:pt-48 md:pb-32 px-6 lg:px-8">
+          <div className="max-w-5xl mx-auto text-center">
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-slate-300 text-sm font-medium mb-8 backdrop-blur-md"
+            >
+              <Award className="h-4 w-4 text-amber-400" />
+              <span>Ethiopia Hospitality Hackathon 2026</span>
+            </motion.div>
             
-            {/* Main Heading */}
-            <h1 className="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-extrabold text-white mb-6 leading-tight tracking-tight animate-fade-in-up">
-              <span className="block animate-slide-in-left">Revenue Management</span>
-              <br />
-              <span className="bg-gradient-to-r from-primary via-amber-400 via-orange-500 to-purple-500 bg-clip-text text-transparent bg-[length:300%_auto] animate-gradient-slow font-black animate-slide-in-right">
-                Powered by AI
+            <motion.h1 
+              initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.1 }}
+              className="text-5xl md:text-7xl font-extrabold tracking-tight mb-8 leading-[1.1]"
+            >
+              Hotel Revenue Management, <br className="hidden md:block" />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-blue-400 to-emerald-400">
+                Powered by AI.
               </span>
-            </h1>
+            </motion.h1>
             
-            {/* Subheading */}
-            <p className="text-lg sm:text-xl lg:text-2xl text-slate-300 max-w-4xl mx-auto mb-12 leading-relaxed animate-fade-in-up delay-300">
-              <span className="animate-pulse-slow">Transform</span> Ethiopian hospitality with 
-              <span className="text-primary font-semibold bg-primary/10 px-2 py-1 rounded-lg backdrop-blur-sm animate-pulse">airline-style dynamic pricing</span>, 
-              <span className="text-emerald-400 font-semibold bg-emerald-500/10 px-2 py-1 rounded-lg backdrop-blur-sm animate-pulse delay-200">intelligent guest segmentation</span>, and 
-              <span className="text-amber-400 font-semibold bg-amber-500/10 px-2 py-1 rounded-lg backdrop-blur-sm animate-pulse delay-400">AI-powered package recommendations</span>. 
-              <span className="block mt-3 text-white font-bold text-2xl bg-gradient-to-r from-emerald-400 to-amber-400 bg-clip-text text-transparent animate-pulse-slow">Increase revenue by 25%</span> while delivering personalized guest experiences.
-            </p>
+            <motion.p 
+              initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.2 }}
+              className="text-lg md:text-xl text-slate-400 max-w-3xl mx-auto mb-12 leading-relaxed"
+            >
+              Transform Ethiopian hospitality with airline-style dynamic pricing, intelligent guest segmentation, and AI-powered recommendations. <span className="text-white font-medium">Increase revenue by 25%</span> automatically.
+            </motion.p>
             
-            {/* Value Proposition Pills */}
-            <div className="flex flex-wrap justify-center gap-3 mb-12 max-w-4xl mx-auto animate-fade-in-up delay-500">
-              <div className="group px-4 py-2 bg-slate-800/60 backdrop-blur-sm border border-white/10 rounded-full text-slate-300 text-sm font-medium hover:border-primary/50 hover:bg-primary/10 hover:text-primary hover:scale-105 transition-all duration-300 hover:shadow-lg hover:shadow-primary/20">
-                <Zap className="inline h-4 w-4 mr-1.5 text-primary group-hover:animate-bounce" />
-                Real-time Pricing
-                <Activity className="inline h-3 w-3 ml-1.5 text-emerald-400 animate-pulse" />
-              </div>
-              <div className="group px-4 py-2 bg-slate-800/60 backdrop-blur-sm border border-white/10 rounded-full text-slate-300 text-sm font-medium hover:border-primary/50 hover:bg-primary/10 hover:text-primary hover:scale-105 transition-all duration-300 hover:shadow-lg hover:shadow-primary/20">
-                <Users className="inline h-4 w-4 mr-1.5 text-primary group-hover:animate-bounce" />
-                8 Guest Segments
-                <Cpu className="inline h-3 w-3 ml-1.5 text-amber-400 animate-pulse" />
-              </div>
-              <div className="group px-4 py-2 bg-slate-800/60 backdrop-blur-sm border border-white/10 rounded-full text-slate-300 text-sm font-medium hover:border-primary/50 hover:bg-primary/10 hover:text-primary hover:scale-105 transition-all duration-300 hover:shadow-lg hover:shadow-primary/20">
-                <Target className="inline h-4 w-4 mr-1.5 text-primary group-hover:animate-bounce" />
-                60% Package Acceptance
-                <TrendingUp className="inline h-3 w-3 ml-1.5 text-emerald-400 animate-pulse" />
-              </div>
-              <div className="group px-4 py-2 bg-slate-800/60 backdrop-blur-sm border border-white/10 rounded-full text-slate-300 text-sm font-medium hover:border-primary/50 hover:bg-primary/10 hover:text-primary hover:scale-105 transition-all duration-300 hover:shadow-lg hover:shadow-primary/20">
-                <Calendar className="inline h-4 w-4 mr-1.5 text-primary group-hover:animate-bounce" />
-                Ethiopian Seasonality
-                <Globe className="inline h-3 w-3 ml-1.5 text-amber-400 animate-pulse" />
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.3 }}
+              className="flex flex-col sm:flex-row items-center justify-center gap-4"
+            >
+              <Button size="lg" className="w-full sm:w-auto h-14 px-8 bg-white text-slate-950 hover:bg-slate-200 text-base font-semibold transition-all">
+                <BarChart3 className="mr-2 h-5 w-5" /> View Live Dashboard
+              </Button>
+              <Button size="lg" variant="outline" className="w-full sm:w-auto h-14 px-8 border-white/20 hover:bg-white/5 text-base font-semibold backdrop-blur-sm transition-all">
+                <Play className="mr-2 h-5 w-5" /> Try Guest Booking
+              </Button>
+            </motion.div>
+
+            {/* Quick Stats */}
+            <motion.div 
+              variants={staggerContainer} initial="hidden" animate="visible"
+              className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-20 pt-10 border-t border-white/10"
+            >
+              {[
+                { label: "Revenue Increase", value: "+25%", icon: TrendingUp, color: "text-emerald-400" },
+                { label: "Package Acceptance", value: "60%", icon: Target, color: "text-blue-400" },
+                { label: "Guest Segments", value: "8", icon: Users, color: "text-amber-400" },
+                { label: "Local Events Tracked", value: "24/7", icon: Calendar, color: "text-purple-400" }
+              ].map((stat, i) => (
+                <motion.div key={i} variants={fadeInUp} className="text-center p-4">
+                  <stat.icon className={`h-6 w-6 mx-auto mb-3 ${stat.color}`} />
+                  <div className="text-3xl font-bold text-white mb-1">{stat.value}</div>
+                  <div className="text-sm text-slate-400 font-medium">{stat.label}</div>
+                </motion.div>
+              ))}
+            </motion.div>
+          </div>
+        </section>
+
+        {/* Features Section */}
+        <section id="features" className="py-24 px-6 lg:px-8 bg-slate-900/50">
+          <div className="max-w-7xl mx-auto">
+            <motion.div 
+              initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={fadeInUp}
+              className="text-center max-w-3xl mx-auto mb-20"
+            >
+              <h2 className="text-3xl md:text-5xl font-bold mb-6">Three Intelligent Engines</h2>
+              <p className="text-lg text-slate-400">Our AI analyzes thousands of data points to optimize every single booking in real-time.</p>
+            </motion.div>
+
+            <div className="grid md:grid-cols-3 gap-8">
+              {[
+                {
+                  icon: Zap,
+                  title: "Dynamic Pricing",
+                  desc: "Airline-style yield management with 7-tier occupancy multipliers and real-time competitor benchmarking.",
+                  features: ["Event-driven pricing (Timkat +70%)", "Automatic inventory fencing", "Saver/Standard/Premium tiers"],
+                  color: "from-blue-500/20 to-blue-500/0",
+                  iconColor: "text-blue-400"
+                },
+                {
+                  icon: Brain,
+                  title: "Guest Segmentation",
+                  desc: "AI classifies every booking into 8 unique segments with deep price sensitivity and package affinity scoring.",
+                  features: ["International vs. domestic", "Business, honeymoon, family", "Real-time classification"],
+                  color: "from-emerald-500/20 to-emerald-500/0",
+                  iconColor: "text-emerald-400"
+                },
+                {
+                  icon: Sparkles,
+                  title: "Package Recommender",
+                  desc: "Pre-built service bundles with dynamic discounting based on the detected segment and current hotel occupancy.",
+                  features: ["5-25% dynamic discounts", "Context-aware upsells", "+ETB 3,300 avg revenue uplift"],
+                  color: "from-amber-500/20 to-amber-500/0",
+                  iconColor: "text-amber-400"
+                }
+              ].map((card, i) => (
+                <motion.div 
+                  key={i}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-50px" }}
+                  transition={{ duration: 0.5, delay: i * 0.2 }}
+                  className="group relative"
+                >
+                  <div className={`absolute inset-0 bg-gradient-to-b ${card.color} rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
+                  <Card className="h-full bg-slate-950/50 border-white/10 backdrop-blur-xl hover:border-white/20 transition-colors z-10 relative">
+                    <CardContent className="p-8">
+                      <div className="h-12 w-12 rounded-lg bg-white/5 flex items-center justify-center mb-6 border border-white/10">
+                        <card.icon className={`h-6 w-6 ${card.iconColor}`} />
+                      </div>
+                      <h3 className="text-2xl font-bold text-white mb-4">{card.title}</h3>
+                      <p className="text-slate-400 mb-8 leading-relaxed">{card.desc}</p>
+                      <ul className="space-y-4">
+                        {card.features.map((feature, idx) => (
+                          <li key={idx} className="flex items-start text-sm text-slate-300">
+                            <CheckCircle2 className={`h-5 w-5 mr-3 shrink-0 ${card.iconColor}`} />
+                            {feature}
+                          </li>
+                        ))}
+                      </ul>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* How It Works (Timeline Flow) */}
+        <section id="how-it-works" className="py-24 px-6 lg:px-8">
+          <div className="max-w-7xl mx-auto">
+            <motion.div 
+              initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp}
+              className="text-center mb-20"
+            >
+              <h2 className="text-3xl md:text-5xl font-bold mb-6">How It Works</h2>
+              <p className="text-lg text-slate-400">A seamless integration that works entirely behind the scenes.</p>
+            </motion.div>
+
+            <div className="relative">
+              {/* Connecting Line */}
+              <div className="hidden md:block absolute top-1/2 left-0 w-full h-1 bg-gradient-to-r from-slate-800 via-primary/50 to-emerald-500/50 -translate-y-1/2 z-0" />
+              
+              <div className="grid md:grid-cols-4 gap-8 relative z-10">
+                {[
+                  { step: "01", title: "Guest Books", desc: "User selects dates and room via your existing booking portal.", icon: Globe },
+                  { step: "02", title: "AI Analyzes", desc: "Engine calculates optimal rate based on local demand & events.", icon: Cpu },
+                  { step: "03", title: "Segment Match", desc: "System recommends personalized packages (e.g., Romance, Tour).", icon: Target },
+                  { step: "04", title: "Rev Maxed", desc: "Guest books higher value cart; data feeds back to dashboard.", icon: DollarSign, highlight: true }
+                ].map((item, i) => (
+                  <motion.div 
+                    key={i}
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.5, delay: i * 0.15 }}
+                    className="relative"
+                  >
+                    <div className={`p-8 rounded-2xl border backdrop-blur-md h-full transition-transform hover:-translate-y-2 ${
+                      item.highlight 
+                        ? 'bg-emerald-950/30 border-emerald-500/30 shadow-[0_0_30px_rgba(16,185,129,0.1)]' 
+                        : 'bg-slate-900/80 border-white/10'
+                    }`}>
+                      <div className={`h-14 w-14 rounded-full flex items-center justify-center mb-6 mx-auto md:mx-0 ${
+                        item.highlight ? 'bg-emerald-500/20 text-emerald-400' : 'bg-slate-800 text-primary'
+                      }`}>
+                        <item.icon className="h-6 w-6" />
+                      </div>
+                      <div className="text-xs font-bold text-slate-500 mb-2">STEP {item.step}</div>
+                      <h3 className="text-xl font-bold text-white mb-3">{item.title}</h3>
+                      <p className="text-slate-400 text-sm">{item.desc}</p>
+                    </div>
+                  </motion.div>
+                ))}
               </div>
             </div>
+          </div>
+        </section>
 
-            {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16 animate-fade-in-up delay-700">
+        {/* Impact / Proof Section */}
+        <section id="impact" className="py-24 px-6 lg:px-8 bg-slate-900/50">
+          <div className="max-w-6xl mx-auto">
+            <div className="grid lg:grid-cols-2 gap-12 items-center">
+              <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp}>
+                <h2 className="text-3xl md:text-5xl font-bold mb-6">Proven Results in Synthetic Data</h2>
+                <p className="text-lg text-slate-400 mb-8 leading-relaxed">
+                  We modeled 100 room nights using standard Ethiopian hospitality metrics. By applying dynamic pricing and AI-driven package recommendations, the difference is undeniable.
+                </p>
+                <ul className="space-y-6">
+                  {[
+                    { title: "Standard Management", value: "$13,500", desc: "Fixed ADR + Random Ancillary" },
+                    { title: "With Kuraz AI", value: "$16,850", desc: "Dynamic Pricing + Segmented Upsells" }
+                  ].map((item, i) => (
+                    <li key={i} className="flex items-center justify-between p-5 rounded-xl border border-white/10 bg-slate-950/50">
+                      <div>
+                        <div className="font-semibold text-white mb-1">{item.title}</div>
+                        <div className="text-sm text-slate-400">{item.desc}</div>
+                      </div>
+                      <div className={`text-2xl font-bold ${i === 1 ? 'text-emerald-400' : 'text-slate-300'}`}>
+                        {item.value}
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </motion.div>
+              
+              <motion.div 
+                initial={{ opacity: 0, x: 50 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.8 }}
+                className="relative"
+              >
+                <div className="absolute inset-0 bg-gradient-to-tr from-primary/20 to-emerald-500/20 rounded-3xl blur-3xl" />
+                <Card className="relative bg-slate-950/80 border-white/10 backdrop-blur-xl overflow-hidden">
+                  <CardContent className="p-10 text-center">
+                    <div className="text-emerald-400 font-mono mb-4 text-sm tracking-widest uppercase">Net Revenue Increase</div>
+                    <div className="text-7xl md:text-8xl font-black text-white mb-6 tracking-tighter">25<span className="text-emerald-500">%</span></div>
+                    <div className="h-2 w-full bg-slate-800 rounded-full overflow-hidden mb-6">
+                      <motion.div 
+                        initial={{ width: 0 }} whileInView={{ width: "100%" }} viewport={{ once: true }} transition={{ duration: 1.5, delay: 0.5 }}
+                        className="h-full bg-gradient-to-r from-primary to-emerald-400"
+                      />
+                    </div>
+                    <p className="text-slate-400">Achieved without increasing baseline occupancy limits.</p>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            </div>
+          </div>
+        </section>
+
+        {/* CTA Section */}
+        <section className="py-32 px-6 lg:px-8 relative overflow-hidden">
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-primary/20 via-slate-950 to-slate-950 -z-10" />
+          <motion.div 
+            initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp}
+            className="max-w-4xl mx-auto text-center"
+          >
+            <h2 className="text-4xl md:text-6xl font-bold mb-8">Ready to modernize your resort?</h2>
+            <p className="text-xl text-slate-400 mb-12">
+              Experience the future of Ethiopian hospitality. Try the manager dashboard or test the guest booking flow.
+            </p>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link href="/login">
-                <Button size="lg" className="group relative overflow-hidden bg-gradient-to-r from-primary to-amber-500 hover:from-primary/90 hover:to-amber-500/90 text-white px-10 py-7 text-lg font-semibold shadow-2xl shadow-primary/30 hover:shadow-primary/50 hover:scale-105 transition-all duration-300 border-2 border-primary/20">
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
-                  <BarChart3 className="mr-2 h-6 w-6 relative z-10 group-hover:animate-bounce" />
-                  <span className="relative z-10">View Live Dashboard</span>
-                  <ArrowRight className="ml-2 h-6 w-6 relative z-10 group-hover:translate-x-2 transition-transform" />
-                  <div className="absolute inset-0 bg-gradient-to-r from-primary/50 to-amber-500/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <Button size="lg" className="h-14 px-8 bg-primary hover:bg-primary/90 text-white text-base font-semibold w-full sm:w-auto">
+                  Access Dashboard <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
               </Link>
               <Link href="/book">
-                <Button size="lg" variant="outline" className="group relative overflow-hidden border-2 border-white/30 text-white hover:bg-white/10 hover:border-primary/50 px-10 py-7 text-lg font-semibold backdrop-blur-sm hover:scale-105 transition-all duration-300">
-                  <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-amber-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                  <Play className="mr-2 h-5 w-5 relative z-10 group-hover:animate-pulse" />
-                  <span className="relative z-10">Try Guest Booking</span>
-                  <Wifi className="ml-2 h-5 w-5 relative z-10 opacity-0 group-hover:opacity-100 group-hover:animate-pulse transition-all" />
+                <Button size="lg" variant="outline" className="h-14 px-8 border-white/20 hover:bg-white/10 text-base font-semibold w-full sm:w-auto backdrop-blur-sm">
+                  Try Guest Booking
                 </Button>
               </Link>
             </div>
-
-            {/* Stats Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 lg:gap-8 max-w-5xl mx-auto animate-fade-in-up delay-1000">
-              <div className="group relative overflow-hidden bg-gradient-to-br from-slate-800/60 to-slate-900/60 backdrop-blur-sm border border-white/10 rounded-2xl p-6 hover:border-primary/50 transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-primary/20">
-                <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                <div className="relative z-10">
-                  <div className="text-5xl lg:text-6xl font-black bg-gradient-to-r from-primary to-amber-400 bg-clip-text text-transparent mb-2 group-hover:animate-pulse-slow">
-                    +25%
-                  </div>
-                  <div className="text-slate-300 font-medium group-hover:text-white transition-colors">Total Revenue Increase</div>
-                  <div className="text-xs text-slate-500 mt-1 group-hover:text-slate-400 transition-colors">Proven with synthetic data</div>
-                  <TrendingUp className="h-4 w-4 text-emerald-400 mt-2 opacity-0 group-hover:opacity-100 group-hover:animate-bounce transition-all" />
-                </div>
-              </div>
-              <div className="group relative overflow-hidden bg-gradient-to-br from-slate-800/60 to-slate-900/60 backdrop-blur-sm border border-white/10 rounded-2xl p-6 hover:border-primary/50 transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-primary/20">
-                <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                <div className="relative z-10">
-                  <div className="text-5xl lg:text-6xl font-black bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent mb-2 group-hover:animate-pulse-slow">
-                    60%
-                  </div>
-                  <div className="text-slate-300 font-medium group-hover:text-white transition-colors">Package Acceptance</div>
-                  <div className="text-xs text-slate-500 mt-1 group-hover:text-slate-400 transition-colors">AI-powered upsells</div>
-                  <Target className="h-4 w-4 text-amber-400 mt-2 opacity-0 group-hover:opacity-100 group-hover:animate-bounce transition-all" />
-                </div>
-              </div>
-              <div className="group relative overflow-hidden bg-gradient-to-br from-slate-800/60 to-slate-900/60 backdrop-blur-sm border border-white/10 rounded-2xl p-6 hover:border-primary/50 transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-primary/20">
-                <div className="absolute inset-0 bg-gradient-to-br from-amber-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                <div className="relative z-10">
-                  <div className="text-5xl lg:text-6xl font-black bg-gradient-to-r from-amber-400 to-orange-400 bg-clip-text text-transparent mb-2 group-hover:animate-pulse-slow">
-                    8
-                  </div>
-                  <div className="text-slate-300 font-medium group-hover:text-white transition-colors">Guest Segments</div>
-                  <div className="text-xs text-slate-500 mt-1 group-hover:text-slate-400 transition-colors">Real-time classification</div>
-                  <Users className="h-4 w-4 text-primary mt-2 opacity-0 group-hover:opacity-100 group-hover:animate-bounce transition-all" />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Decorative Elements */}
-        <div className="absolute top-1/2 left-0 w-72 h-72 bg-primary/5 rounded-full blur-3xl -z-10"></div>
-        <div className="absolute top-1/3 right-0 w-96 h-96 bg-amber-500/5 rounded-full blur-3xl -z-10"></div>
-      </section>
-
-      {/* Features Section */}
-      <section id="features" className={`relative py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-slate-900/50 to-slate-950 transition-all duration-1000 ${
-        isVisible['features'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-      }`}>
-        <div className="max-w-7xl mx-auto">
-          <div className={`text-center mb-20 transition-all duration-1000 delay-200 ${
-            isVisible['features'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-          }`}>
-            <div className="inline-block px-4 py-2 bg-primary/10 border border-primary/20 rounded-full text-primary text-sm font-semibold mb-4 animate-pulse-slow">
-              The Challenge
-            </div>
-            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-6">
-              Why Ethiopian Resorts
-              <br />
-              <span className="bg-gradient-to-r from-primary to-amber-400 bg-clip-text text-transparent">
-                Need Kuraz AI
-              </span>
-            </h2>
-            <p className="text-slate-400 text-lg lg:text-xl max-w-3xl mx-auto">
-              Traditional revenue management leaves 20-30% of potential revenue on the table
-            </p>
-          </div>
-
-          {/* Problem Cards */}
-          <div className={`grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-20 transition-all duration-1000 delay-400 ${
-            isVisible['features'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-          }`}>
-            <Card className="group relative overflow-hidden bg-gradient-to-br from-slate-800/60 to-slate-900/60 backdrop-blur-sm border border-red-500/20 hover:border-red-500/40 transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-red-500/20">
-              <div className="absolute inset-0 bg-gradient-to-br from-red-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-              <CardContent className="relative z-10 p-6">
-                <div className="h-12 w-12 rounded-xl bg-red-500/10 flex items-center justify-center mb-4 group-hover:scale-110 group-hover:bg-red-500/20 transition-all duration-300">
-                  <DollarSign className="h-6 w-6 text-red-400 group-hover:animate-bounce" />
-                </div>
-                <h3 className="text-white font-bold mb-2 group-hover:text-red-400 transition-colors">Static Pricing</h3>
-                <p className="text-slate-400 text-sm group-hover:text-slate-300 transition-colors">Fixed rates regardless of demand, seasonality, or events</p>
-              </CardContent>
-            </Card>
-            
-            <Card className="group relative overflow-hidden bg-gradient-to-br from-slate-800/60 to-slate-900/60 backdrop-blur-sm border border-red-500/20 hover:border-red-500/40 transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-red-500/20">
-              <div className="absolute inset-0 bg-gradient-to-br from-red-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-              <CardContent className="relative z-10 p-6">
-                <div className="h-12 w-12 rounded-xl bg-red-500/10 flex items-center justify-center mb-4 group-hover:scale-110 group-hover:bg-red-500/20 transition-all duration-300">
-                  <Target className="h-6 w-6 text-red-400 group-hover:animate-bounce" />
-                </div>
-                <h3 className="text-white font-bold mb-2 group-hover:text-red-400 transition-colors">Missed Upsells</h3>
-                <p className="text-slate-400 text-sm group-hover:text-slate-300 transition-colors">No systematic approach to package recommendations</p>
-              </CardContent>
-            </Card>
-            
-            <Card className="group relative overflow-hidden bg-gradient-to-br from-slate-800/60 to-slate-900/60 backdrop-blur-sm border border-red-500/20 hover:border-red-500/40 transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-red-500/20">
-              <div className="absolute inset-0 bg-gradient-to-br from-red-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-              <CardContent className="relative z-10 p-6">
-                <div className="h-12 w-12 rounded-xl bg-red-500/10 flex items-center justify-center mb-4 group-hover:scale-110 group-hover:bg-red-500/20 transition-all duration-300">
-                  <Users className="h-6 w-6 text-red-400 group-hover:animate-bounce" />
-                </div>
-                <h3 className="text-white font-bold mb-2 group-hover:text-red-400 transition-colors">Poor Insights</h3>
-                <p className="text-slate-400 text-sm group-hover:text-slate-300 transition-colors">Limited understanding of guest preferences and behavior</p>
-              </CardContent>
-            </Card>
-            
-            <Card className="group relative overflow-hidden bg-gradient-to-br from-slate-800/60 to-slate-900/60 backdrop-blur-sm border border-red-500/20 hover:border-red-500/40 transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-red-500/20">
-              <div className="absolute inset-0 bg-gradient-to-br from-red-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-              <CardContent className="relative z-10 p-6">
-                <div className="h-12 w-12 rounded-xl bg-red-500/10 flex items-center justify-center mb-4 group-hover:scale-110 group-hover:bg-red-500/20 transition-all duration-300">
-                  <BarChart3 className="h-6 w-6 text-red-400 group-hover:animate-bounce" />
-                </div>
-                <h3 className="text-white font-bold mb-2 group-hover:text-red-400 transition-colors">Manual Work</h3>
-                <p className="text-slate-400 text-sm group-hover:text-slate-300 transition-colors">Time-consuming decisions without data-driven insights</p>
-              </CardContent>
-            </Card>
-          </div>
-
-          <div className={`text-center mb-20 transition-all duration-1000 delay-600 ${
-            isVisible['features'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-          }`}>
-            <div className="inline-block px-4 py-2 bg-primary/10 border border-primary/20 rounded-full text-primary text-sm font-semibold mb-4 animate-pulse-slow">
-              Three Intelligent Engines
-            </div>
-            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-6">
-              AI-Powered Revenue
-              <br />
-              <span className="bg-gradient-to-r from-primary to-amber-400 bg-clip-text text-transparent">
-                Optimization
-              </span>
-            </h2>
-            <p className="text-slate-400 text-lg lg:text-xl max-w-3xl mx-auto">
-              Three intelligent engines working together to maximize every booking
-            </p>
-          </div>
-
-          <div className={`grid lg:grid-cols-3 gap-8 transition-all duration-1000 delay-800 ${
-            isVisible['features'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-          }`}>
-            {/* Dynamic Pricing */}
-            <Card className="group relative overflow-hidden bg-gradient-to-br from-slate-800/80 to-slate-900/80 border-white/10 hover:border-primary/50 transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-primary/20 backdrop-blur-sm">
-              <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-amber-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-              <div className="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-              <CardContent className="relative z-10 p-8">
-                <div className="relative mb-6">
-                  <div className="h-16 w-16 rounded-2xl bg-gradient-to-br from-primary/20 to-amber-500/20 flex items-center justify-center group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
-                    <TrendingUp className="h-8 w-8 text-primary group-hover:animate-bounce" />
-                  </div>
-                  <div className="absolute inset-0 bg-primary/20 blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                </div>
-                <h3 className="text-2xl font-bold text-white mb-4 group-hover:text-primary transition-colors duration-300">
-                  Dynamic Pricing Engine
-                </h3>
-                <p className="text-slate-400 mb-6 leading-relaxed group-hover:text-slate-300 transition-colors duration-300">
-                  Airline-style yield management with 7-tier occupancy multipliers, 
-                  Ethiopian seasonality, and real-time competitor benchmarking.
-                </p>
-                <ul className="space-y-3 text-sm">
-                  <li className="flex items-start text-slate-300 group-hover:text-white transition-colors duration-300">
-                    <CheckCircle2 className="h-5 w-5 text-primary mr-3 mt-0.5 shrink-0 group-hover:animate-pulse" />
-                    <span>Saver/Standard/Premium fare classes</span>
-                  </li>
-                  <li className="flex items-start text-slate-300 group-hover:text-white transition-colors duration-300">
-                    <CheckCircle2 className="h-5 w-5 text-primary mr-3 mt-0.5 shrink-0 group-hover:animate-pulse delay-100" />
-                    <span>Event-driven pricing (Timkat +70%)</span>
-                  </li>
-                  <li className="flex items-start text-slate-300 group-hover:text-white transition-colors duration-300">
-                    <CheckCircle2 className="h-5 w-5 text-primary mr-3 mt-0.5 shrink-0 group-hover:animate-pulse delay-200" />
-                    <span>Automatic inventory fencing</span>
-                  </li>
-                </ul>
-                <div className="mt-6 pt-6 border-t border-white/10">
-                  <div className="flex items-center text-primary font-semibold group-hover:translate-x-2 transition-transform duration-300 cursor-pointer">
-                    Learn More <ChevronRight className="ml-1 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Guest Segmentation */}
-            <Card className="group relative overflow-hidden bg-gradient-to-br from-slate-800/80 to-slate-900/80 border-white/10 hover:border-emerald-500/50 transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-emerald-500/20 backdrop-blur-sm">
-              <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/10 via-cyan-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-              <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/10 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-              <CardContent className="relative z-10 p-8">
-                <div className="relative mb-6">
-                  <div className="h-16 w-16 rounded-2xl bg-gradient-to-br from-emerald-500/20 to-cyan-500/20 flex items-center justify-center group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
-                    <Users className="h-8 w-8 text-emerald-400 group-hover:animate-bounce" />
-                  </div>
-                  <div className="absolute inset-0 bg-emerald-500/20 blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                </div>
-                <h3 className="text-2xl font-bold text-white mb-4 group-hover:text-emerald-400 transition-colors duration-300">
-                  Guest Segmentation
-                </h3>
-                <p className="text-slate-400 mb-6 leading-relaxed group-hover:text-slate-300 transition-colors duration-300">
-                  AI classifies every booking into 8 segments with price sensitivity 
-                  and package affinity scoring.
-                </p>
-                <ul className="space-y-3 text-sm">
-                  <li className="flex items-start text-slate-300 group-hover:text-white transition-colors duration-300">
-                    <CheckCircle2 className="h-5 w-5 text-emerald-400 mr-3 mt-0.5 shrink-0 group-hover:animate-pulse" />
-                    <span>International vs. domestic patterns</span>
-                  </li>
-                  <li className="flex items-start text-slate-300 group-hover:text-white transition-colors duration-300">
-                    <CheckCircle2 className="h-5 w-5 text-emerald-400 mr-3 mt-0.5 shrink-0 group-hover:animate-pulse delay-100" />
-                    <span>Business, honeymoon, family detection</span>
-                  </li>
-                  <li className="flex items-start text-slate-300 group-hover:text-white transition-colors duration-300">
-                    <CheckCircle2 className="h-5 w-5 text-emerald-400 mr-3 mt-0.5 shrink-0 group-hover:animate-pulse delay-200" />
-                    <span>Real-time classification at booking</span>
-                  </li>
-                </ul>
-                <div className="mt-6 pt-6 border-t border-white/10">
-                  <div className="flex items-center text-emerald-400 font-semibold group-hover:translate-x-2 transition-transform duration-300 cursor-pointer">
-                    Learn More <ChevronRight className="ml-1 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Package Recommender */}
-            <Card className="group relative overflow-hidden bg-gradient-to-br from-slate-800/80 to-slate-900/80 border-white/10 hover:border-amber-500/50 transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-amber-500/20 backdrop-blur-sm">
-              <div className="absolute inset-0 bg-gradient-to-br from-amber-500/10 via-orange-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-              <div className="absolute top-0 right-0 w-32 h-32 bg-amber-500/10 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-              <CardContent className="relative z-10 p-8">
-                <div className="relative mb-6">
-                  <div className="h-16 w-16 rounded-2xl bg-gradient-to-br from-amber-500/20 to-orange-500/20 flex items-center justify-center group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
-                    <Zap className="h-8 w-8 text-amber-400 group-hover:animate-bounce" />
-                  </div>
-                  <div className="absolute inset-0 bg-amber-500/20 blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                </div>
-                <h3 className="text-2xl font-bold text-white mb-4 group-hover:text-amber-400 transition-colors duration-300">
-                  Package Recommender
-                </h3>
-                <p className="text-slate-400 mb-6 leading-relaxed group-hover:text-slate-300 transition-colors duration-300">
-                  10 pre-built service bundles with dynamic discounting based on 
-                  segment and occupancy.
-                </p>
-                <ul className="space-y-3 text-sm">
-                  <li className="flex items-start text-slate-300 group-hover:text-white transition-colors duration-300">
-                    <CheckCircle2 className="h-5 w-5 text-amber-400 mr-3 mt-0.5 shrink-0 group-hover:animate-pulse" />
-                    <span>Romance, Family, Business packages</span>
-                  </li>
-                  <li className="flex items-start text-slate-300 group-hover:text-white transition-colors duration-300">
-                    <CheckCircle2 className="h-5 w-5 text-amber-400 mr-3 mt-0.5 shrink-0 group-hover:animate-pulse delay-100" />
-                    <span>5-25% dynamic discounts</span>
-                  </li>
-                  <li className="flex items-start text-slate-300 group-hover:text-white transition-colors duration-300">
-                    <CheckCircle2 className="h-5 w-5 text-amber-400 mr-3 mt-0.5 shrink-0 group-hover:animate-pulse delay-200" />
-                    <span>+ETB 3,300 avg revenue uplift</span>
-                  </li>
-                </ul>
-                <div className="mt-6 pt-6 border-t border-white/10">
-                  <div className="flex items-center text-amber-400 font-semibold group-hover:translate-x-2 transition-transform duration-300 cursor-pointer">
-                    Learn More <ChevronRight className="ml-1 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-      </section>
-
-      {/* How It Works Section */}
-      <section id="how-it-works" className="relative py-24 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-20">
-            <div className="inline-block px-4 py-2 bg-primary/10 border border-primary/20 rounded-full text-primary text-sm font-semibold mb-4">
-              Simple Integration
-            </div>
-            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-6">
-              How Kuraz AI
-              <br />
-              <span className="bg-gradient-to-r from-primary to-amber-400 bg-clip-text text-transparent">
-                Works
-              </span>
-            </h2>
-          </div>
-
-          <div className="grid lg:grid-cols-4 gap-8">
-            <div className="relative">
-              <div className="bg-gradient-to-br from-slate-800/60 to-slate-900/60 backdrop-blur-sm border border-white/10 rounded-2xl p-8 hover:border-primary/50 transition-all">
-                <div className="h-14 w-14 rounded-xl bg-gradient-to-br from-primary/20 to-amber-500/20 flex items-center justify-center mb-6">
-                  <Globe className="h-7 w-7 text-primary" />
-                </div>
-                <div className="text-primary font-bold text-sm mb-2">STEP 1</div>
-                <h3 className="text-xl font-bold text-white mb-3">Guest Arrives</h3>
-                <p className="text-slate-400 text-sm leading-relaxed">
-                  Guest visits booking portal and selects dates, room type, and party size
-                </p>
-              </div>
-              <div className="hidden lg:block absolute top-1/2 -right-4 w-8 h-0.5 bg-gradient-to-r from-primary/50 to-transparent"></div>
-            </div>
-
-            <div className="relative">
-              <div className="bg-gradient-to-br from-slate-800/60 to-slate-900/60 backdrop-blur-sm border border-white/10 rounded-2xl p-8 hover:border-primary/50 transition-all">
-                <div className="h-14 w-14 rounded-xl bg-gradient-to-br from-primary/20 to-amber-500/20 flex items-center justify-center mb-6">
-                  <Brain className="h-7 w-7 text-primary" />
-                </div>
-                <div className="text-primary font-bold text-sm mb-2">STEP 2</div>
-                <h3 className="text-xl font-bold text-white mb-3">AI Analyzes</h3>
-                <p className="text-slate-400 text-sm leading-relaxed">
-                  Dynamic pricing calculates optimal rate based on occupancy, lead time, and events
-                </p>
-              </div>
-              <div className="hidden lg:block absolute top-1/2 -right-4 w-8 h-0.5 bg-gradient-to-r from-primary/50 to-transparent"></div>
-            </div>
-
-            <div className="relative">
-              <div className="bg-gradient-to-br from-slate-800/60 to-slate-900/60 backdrop-blur-sm border border-white/10 rounded-2xl p-8 hover:border-primary/50 transition-all">
-                <div className="h-14 w-14 rounded-xl bg-gradient-to-br from-primary/20 to-amber-500/20 flex items-center justify-center mb-6">
-                  <Target className="h-7 w-7 text-primary" />
-                </div>
-                <div className="text-primary font-bold text-sm mb-2">STEP 3</div>
-                <h3 className="text-xl font-bold text-white mb-3">Segment & Recommend</h3>
-                <p className="text-slate-400 text-sm leading-relaxed">
-                  AI identifies guest segment and recommends personalized package bundles
-                </p>
-              </div>
-              <div className="hidden lg:block absolute top-1/2 -right-4 w-8 h-0.5 bg-gradient-to-r from-primary/50 to-transparent"></div>
-            </div>
-
-            <div className="bg-gradient-to-br from-primary/10 to-amber-500/10 backdrop-blur-sm border border-primary/30 rounded-2xl p-8">
-              <div className="h-14 w-14 rounded-xl bg-gradient-to-br from-primary/30 to-amber-500/30 flex items-center justify-center mb-6">
-                <DollarSign className="h-7 w-7 text-primary" />
-              </div>
-              <div className="text-primary font-bold text-sm mb-2">RESULT</div>
-              <h3 className="text-xl font-bold text-white mb-3">Revenue Maximized</h3>
-              <p className="text-slate-300 text-sm leading-relaxed font-medium">
-                Guest books at optimal price with high-value package add-ons
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Demo Section */}
-      <section id="demo" className="py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-slate-900/50 to-slate-950">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-20">
-            <div className="inline-block px-4 py-2 bg-primary/10 border border-primary/20 rounded-full text-primary text-sm font-semibold mb-4">
-              Interactive Experience
-            </div>
-            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-6">
-              See It In
-              <br />
-              <span className="bg-gradient-to-r from-primary to-amber-400 bg-clip-text text-transparent">
-                Action
-              </span>
-            </h2>
-            <p className="text-slate-400 text-lg lg:text-xl">
-              Three ways to experience Kuraz AI
-            </p>
-          </div>
-
-          <div className="grid lg:grid-cols-3 gap-8">
-            <Link href="/login" className="group block">
-              <Card className="h-full bg-gradient-to-br from-slate-800/60 to-slate-900/60 border-white/10 hover:border-primary/50 transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-primary/20 backdrop-blur-sm">
-                <CardContent className="p-8">
-                  <div className="relative mb-6">
-                    <BarChart3 className="h-12 w-12 text-primary group-hover:scale-110 transition-transform" />
-                    <div className="absolute inset-0 bg-primary/20 blur-2xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                  </div>
-                  <h3 className="text-2xl font-bold text-white mb-3 group-hover:text-primary transition-colors">
-                    Revenue Dashboard
-                  </h3>
-                  <p className="text-slate-400 mb-6 leading-relaxed">
-                    KPIs, pricing heatmap, AI insights, and package performance metrics
-                  </p>
-                  <div className="text-primary text-sm font-semibold flex items-center group-hover:translate-x-2 transition-transform">
-                    Login as Manager <ArrowRight className="ml-2 h-4 w-4" />
-                  </div>
-                </CardContent>
-              </Card>
-            </Link>
-
-            <Link href="/simulate" className="group block">
-              <Card className="h-full bg-gradient-to-br from-slate-800/60 to-slate-900/60 border-white/10 hover:border-primary/50 transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-primary/20 backdrop-blur-sm">
-                <CardContent className="p-8">
-                  <div className="relative mb-6">
-                    <Brain className="h-12 w-12 text-primary group-hover:scale-110 transition-transform" />
-                    <div className="absolute inset-0 bg-primary/20 blur-2xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                  </div>
-                  <h3 className="text-2xl font-bold text-white mb-3 group-hover:text-primary transition-colors">
-                    AI Simulator
-                  </h3>
-                  <p className="text-slate-400 mb-6 leading-relaxed">
-                    Watch the AI analyze bookings and show multiplier breakdowns
-                  </p>
-                  <div className="text-primary text-sm font-semibold flex items-center group-hover:translate-x-2 transition-transform">
-                    Try Simulation <ArrowRight className="ml-2 h-4 w-4" />
-                  </div>
-                </CardContent>
-              </Card>
-            </Link>
-
-            <Link href="/book" className="group block">
-              <Card className="h-full bg-gradient-to-br from-slate-800/60 to-slate-900/60 border-white/10 hover:border-primary/50 transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-primary/20 backdrop-blur-sm">
-                <CardContent className="p-8">
-                  <div className="relative mb-6">
-                    <Star className="h-12 w-12 text-primary group-hover:scale-110 transition-transform" />
-                    <div className="absolute inset-0 bg-primary/20 blur-2xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                  </div>
-                  <h3 className="text-2xl font-bold text-white mb-3 group-hover:text-primary transition-colors">
-                    Guest Booking
-                  </h3>
-                  <p className="text-slate-400 mb-6 leading-relaxed">
-                    Experience the AI upsell flow from a guest's perspective
-                  </p>
-                  <div className="text-primary text-sm font-semibold flex items-center group-hover:translate-x-2 transition-transform">
-                    Book a Room <ArrowRight className="ml-2 h-4 w-4" />
-                  </div>
-                </CardContent>
-              </Card>
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* Impact Section */}
-      <section id="impact" className="relative py-24 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-20">
-            <div className="inline-block px-4 py-2 bg-primary/10 border border-primary/20 rounded-full text-primary text-sm font-semibold mb-4">
-              Proven Results
-            </div>
-            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-6">
-              Measurable Revenue
-              <br />
-              <span className="bg-gradient-to-r from-primary to-amber-400 bg-clip-text text-transparent">
-                Impact
-              </span>
-            </h2>
-            <p className="text-slate-400 text-lg lg:text-xl">
-              Real numbers from our synthetic Ethiopian resort data
-            </p>
-          </div>
-
-          <div className="grid lg:grid-cols-2 gap-8 lg:gap-12">
-            <Card className="bg-gradient-to-br from-slate-800/60 to-slate-900/60 border-white/10 backdrop-blur-sm">
-              <CardContent className="p-8 lg:p-10">
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="h-3 w-3 rounded-full bg-slate-500"></div>
-                  <div className="text-sm font-bold text-slate-400 uppercase tracking-wider">Without Kuraz AI</div>
-                </div>
-                <div className="space-y-4 mb-8">
-                  <div className="flex justify-between items-center text-slate-300">
-                    <span className="text-sm">100 room nights × $120 ADR</span>
-                    <span className="font-semibold">$12,000</span>
-                  </div>
-                  <div className="flex justify-between items-center text-slate-300">
-                    <span className="text-sm">Ancillary (random walk-ins)</span>
-                    <span className="font-semibold">$1,500</span>
-                  </div>
-                  <div className="border-t border-white/10 pt-4 flex justify-between items-center">
-                    <span className="text-white font-bold text-lg">TOTAL REVENUE</span>
-                    <span className="text-white font-bold text-2xl">$13,500</span>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card className="relative bg-gradient-to-br from-primary/20 via-amber-500/10 to-orange-500/20 border-2 border-primary/50 backdrop-blur-sm overflow-hidden">
-              <div className="absolute top-0 right-0 w-64 h-64 bg-primary/10 rounded-full blur-3xl"></div>
-              <CardContent className="relative p-8 lg:p-10">
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="h-3 w-3 rounded-full bg-primary animate-pulse"></div>
-                  <div className="text-sm font-bold text-primary uppercase tracking-wider">With Kuraz AI</div>
-                </div>
-                <div className="space-y-4 mb-8">
-                  <div className="flex justify-between items-center text-white">
-                    <span className="text-sm font-medium">Dynamic pricing (30/45/25 mix)</span>
-                    <span className="font-semibold">$13,550</span>
-                  </div>
-                  <div className="flex justify-between items-center text-white">
-                    <span className="text-sm font-medium">Package recommendations (60%)</span>
-                    <span className="font-semibold text-emerald-400">+$3,300</span>
-                  </div>
-                  <div className="border-t border-white/20 pt-4 flex justify-between items-center">
-                    <span className="text-white font-bold text-lg">TOTAL REVENUE</span>
-                    <span className="text-white font-bold text-2xl">$16,850</span>
-                  </div>
-                </div>
-                <div className="bg-gradient-to-r from-emerald-500/20 to-green-500/20 border-2 border-emerald-500/40 rounded-xl p-5 text-center">
-                  <div className="text-4xl font-black text-emerald-400 mb-1">+25%</div>
-                  <div className="text-sm font-semibold text-emerald-300">Revenue Increase</div>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-      </section>
-
-      {/* Technology Stack Section */}
-      <section className="relative py-24 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-20">
-            <div className="inline-block px-4 py-2 bg-primary/10 border border-primary/20 rounded-full text-primary text-sm font-semibold mb-4">
-              Built with Modern Tech
-            </div>
-            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-6">
-              Enterprise-Grade
-              <br />
-              <span className="bg-gradient-to-r from-primary to-amber-400 bg-clip-text text-transparent">
-                Technology Stack
-              </span>
-            </h2>
-            <p className="text-slate-400 text-lg lg:text-xl max-w-3xl mx-auto">
-              Production-ready architecture designed for scale and performance
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <Card className="bg-slate-800/40 backdrop-blur-sm border border-white/10 hover:border-primary/30 transition-all">
-              <CardContent className="p-6">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center">
-                    <Zap className="h-5 w-5 text-primary" />
-                  </div>
-                  <h3 className="text-white font-bold text-lg">Frontend</h3>
-                </div>
-                <ul className="space-y-2 text-sm text-slate-400">
-                  <li className="flex items-center">
-                    <CheckCircle2 className="h-4 w-4 text-primary mr-2" />
-                    Next.js 14 (App Router)
-                  </li>
-                  <li className="flex items-center">
-                    <CheckCircle2 className="h-4 w-4 text-primary mr-2" />
-                    React 18 with TypeScript
-                  </li>
-                  <li className="flex items-center">
-                    <CheckCircle2 className="h-4 w-4 text-primary mr-2" />
-                    Tailwind CSS + shadcn/ui
-                  </li>
-                </ul>
-              </CardContent>
-            </Card>
-
-            <Card className="bg-slate-800/40 backdrop-blur-sm border border-white/10 hover:border-primary/30 transition-all">
-              <CardContent className="p-6">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center">
-                    <BarChart3 className="h-5 w-5 text-primary" />
-                  </div>
-                  <h3 className="text-white font-bold text-lg">Data & AI</h3>
-                </div>
-                <ul className="space-y-2 text-sm text-slate-400">
-                  <li className="flex items-center">
-                    <CheckCircle2 className="h-4 w-4 text-primary mr-2" />
-                    Dynamic Pricing Engine
-                  </li>
-                  <li className="flex items-center">
-                    <CheckCircle2 className="h-4 w-4 text-primary mr-2" />
-                    Guest Segmentation AI
-                  </li>
-                  <li className="flex items-center">
-                    <CheckCircle2 className="h-4 w-4 text-primary mr-2" />
-                    Package Recommender
-                  </li>
-                </ul>
-              </CardContent>
-            </Card>
-
-            <Card className="bg-slate-800/40 backdrop-blur-sm border border-white/10 hover:border-primary/30 transition-all">
-              <CardContent className="p-6">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center">
-                    <TrendingUp className="h-5 w-5 text-primary" />
-                  </div>
-                  <h3 className="text-white font-bold text-lg">Visualization</h3>
-                </div>
-                <ul className="space-y-2 text-sm text-slate-400">
-                  <li className="flex items-center">
-                    <CheckCircle2 className="h-4 w-4 text-primary mr-2" />
-                    Recharts for analytics
-                  </li>
-                  <li className="flex items-center">
-                    <CheckCircle2 className="h-4 w-4 text-primary mr-2" />
-                    Real-time dashboards
-                  </li>
-                  <li className="flex items-center">
-                    <CheckCircle2 className="h-4 w-4 text-primary mr-2" />
-                    Interactive heatmaps
-                  </li>
-                </ul>
-              </CardContent>
-            </Card>
-
-            <Card className="bg-slate-800/40 backdrop-blur-sm border border-white/10 hover:border-primary/30 transition-all">
-              <CardContent className="p-6">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center">
-                    <Globe className="h-5 w-5 text-primary" />
-                  </div>
-                  <h3 className="text-white font-bold text-lg">Deployment</h3>
-                </div>
-                <ul className="space-y-2 text-sm text-slate-400">
-                  <li className="flex items-center">
-                    <CheckCircle2 className="h-4 w-4 text-primary mr-2" />
-                    Vercel Edge Network
-                  </li>
-                  <li className="flex items-center">
-                    <CheckCircle2 className="h-4 w-4 text-primary mr-2" />
-                    Global CDN
-                  </li>
-                  <li className="flex items-center">
-                    <CheckCircle2 className="h-4 w-4 text-primary mr-2" />
-                    Auto-scaling
-                  </li>
-                </ul>
-              </CardContent>
-            </Card>
-
-            <Card className="bg-slate-800/40 backdrop-blur-sm border border-white/10 hover:border-primary/30 transition-all">
-              <CardContent className="p-6">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center">
-                    <Brain className="h-5 w-5 text-primary" />
-                  </div>
-                  <h3 className="text-white font-bold text-lg">Ethiopian Context</h3>
-                </div>
-                <ul className="space-y-2 text-sm text-slate-400">
-                  <li className="flex items-center">
-                    <CheckCircle2 className="h-4 w-4 text-primary mr-2" />
-                    Local holiday awareness
-                  </li>
-                  <li className="flex items-center">
-                    <CheckCircle2 className="h-4 w-4 text-primary mr-2" />
-                    Seasonal patterns
-                  </li>
-                  <li className="flex items-center">
-                    <CheckCircle2 className="h-4 w-4 text-primary mr-2" />
-                    Cultural events (Timkat)
-                  </li>
-                </ul>
-              </CardContent>
-            </Card>
-
-            <Card className="bg-slate-800/40 backdrop-blur-sm border border-white/10 hover:border-primary/30 transition-all">
-              <CardContent className="p-6">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center">
-                    <Star className="h-5 w-5 text-primary" />
-                  </div>
-                  <h3 className="text-white font-bold text-lg">UX Design</h3>
-                </div>
-                <ul className="space-y-2 text-sm text-slate-400">
-                  <li className="flex items-center">
-                    <CheckCircle2 className="h-4 w-4 text-primary mr-2" />
-                    Glassmorphism UI
-                  </li>
-                  <li className="flex items-center">
-                    <CheckCircle2 className="h-4 w-4 text-primary mr-2" />
-                    Responsive design
-                  </li>
-                  <li className="flex items-center">
-                    <CheckCircle2 className="h-4 w-4 text-primary mr-2" />
-                    Smooth animations
-                  </li>
-                </ul>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="relative py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-slate-900/50 to-slate-950">
-        <div className="max-w-5xl mx-auto text-center">
-          <div className="relative z-10">
-            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
-              Ready to Transform
-              <br />
-              <span className="bg-gradient-to-r from-primary to-amber-400 bg-clip-text text-transparent">
-                Your Resort Revenue?
-              </span>
-            </h2>
-            <p className="text-slate-300 text-lg lg:text-xl mb-12 max-w-3xl mx-auto leading-relaxed">
-              Built for the <span className="text-primary font-semibold">Ethiopia Hospitality Hackathon 2026</span>. 
-              Designed for real-world deployment.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/login">
-                <Button size="lg" className="group bg-gradient-to-r from-primary to-amber-500 hover:from-primary/90 hover:to-amber-500/90 text-white px-10 py-7 text-lg font-semibold shadow-2xl shadow-primary/30">
-                  <BarChart3 className="mr-2 h-6 w-6" />
-                  Access Dashboard
-                  <ArrowRight className="ml-2 h-6 w-6 group-hover:translate-x-1 transition-transform" />
-                </Button>
-              </Link>
-              <Link href="/book">
-                <Button size="lg" variant="outline" className="border-2 border-white/30 text-white hover:bg-white/10 hover:border-primary/50 px-10 py-7 text-lg font-semibold backdrop-blur-sm">
-                  Try Guest Experience
-                </Button>
-              </Link>
-            </div>
-          </div>
-        </div>
-        
-        {/* Decorative Elements */}
-        <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl -z-10"></div>
-        <div className="absolute top-0 right-1/4 w-96 h-96 bg-amber-500/5 rounded-full blur-3xl -z-10"></div>
-      </section>
+          </motion.div>
+        </section>
+      </main>
 
       {/* Footer */}
-      <footer className="border-t border-white/10 py-12 px-4 sm:px-6 lg:px-8 bg-slate-950">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid md:grid-cols-4 gap-8 mb-8">
-            {/* Brand */}
-            <div className="md:col-span-2">
-              <div className="flex items-center space-x-3 mb-4">
-                <div className="relative">
-                  <Sparkles className="h-6 w-6 text-primary" />
-                  <div className="absolute inset-0 bg-primary/20 blur-xl"></div>
-                </div>
-                <span className="font-bold text-white text-xl">Kuraz AI</span>
-              </div>
-              <p className="text-slate-400 text-sm mb-4 max-w-md">
-                AI-powered revenue management system for Ethiopian resorts. 
-                Increase revenue by 25% with dynamic pricing, guest segmentation, 
-                and intelligent package recommendations.
-              </p>
-              <div className="flex items-center gap-2 text-slate-400 text-sm">
-                <Award className="h-4 w-4 text-primary" />
-                <span>Ethiopia Hospitality Hackathon 2026</span>
-              </div>
-            </div>
-
-            {/* Quick Links */}
-            <div>
-              <h4 className="text-white font-semibold mb-4">Quick Links</h4>
-              <ul className="space-y-2 text-sm">
-                <li>
-                  <a href="#features" className="text-slate-400 hover:text-primary transition-colors">
-                    Features
-                  </a>
-                </li>
-                <li>
-                  <a href="#how-it-works" className="text-slate-400 hover:text-primary transition-colors">
-                    How It Works
-                  </a>
-                </li>
-                <li>
-                  <a href="#demo" className="text-slate-400 hover:text-primary transition-colors">
-                    Demo
-                  </a>
-                </li>
-                <li>
-                  <a href="#impact" className="text-slate-400 hover:text-primary transition-colors">
-                    Impact
-                  </a>
-                </li>
-              </ul>
-            </div>
-
-            {/* Try It */}
-            <div>
-              <h4 className="text-white font-semibold mb-4">Try It Now</h4>
-              <ul className="space-y-2 text-sm">
-                <li>
-                  <Link href="/login" className="text-slate-400 hover:text-primary transition-colors">
-                    Manager Dashboard
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/book" className="text-slate-400 hover:text-primary transition-colors">
-                    Guest Booking
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/simulate" className="text-slate-400 hover:text-primary transition-colors">
-                    AI Simulator
-                  </Link>
-                </li>
-              </ul>
-            </div>
+      <footer className="border-t border-white/10 bg-slate-950/50 py-12 px-6 lg:px-8 relative z-10">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
+          <div className="flex items-center space-x-2 opacity-80">
+            <Sparkles className="h-5 w-5 text-primary" />
+            <span className="font-bold text-lg text-white">KurazAI</span>
           </div>
-
-          {/* Bottom Bar */}
-          <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4">
-            <div className="text-slate-500 text-sm">
-              © 2026 Kuraz AI. Built for Ethiopian hospitality innovation.
-            </div>
-            <div className="flex items-center gap-6 text-sm text-slate-400">
-              <span className="flex items-center gap-2">
-                <Brain className="h-4 w-4 text-primary" />
-                Powered by AI
-              </span>
-              <span className="flex items-center gap-2">
-                <Globe className="h-4 w-4 text-primary" />
-                Made in Ethiopia
-              </span>
-            </div>
+          <div className="text-sm text-slate-500 text-center md:text-left">
+            Built for the Ethiopia Hospitality Hackathon 2026.
+          </div>
+          <div className="flex items-center gap-4 text-sm text-slate-400">
+            <span className="flex items-center gap-1"><Brain className="h-4 w-4" /> Powered by AI</span>
+            <span className="flex items-center gap-1"><Globe className="h-4 w-4" /> Addis Ababa</span>
           </div>
         </div>
       </footer>

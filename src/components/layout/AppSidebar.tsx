@@ -27,7 +27,7 @@ const navigation = [
   { name: "Ask Revenue AI", href: "/ask", icon: MessageSquare, badge: "AI" },
   { name: "User Management", href: "/admin-users", icon: Users, adminOnly: true },
   { name: "All Bookings", href: "/admin-bookings", icon: CalendarDays, adminOnly: true },
-  { name: "My Profile", href: "/profile", icon: UserCircle },
+  // { name: "My Profile", href: "/profile", icon: UserCircle },
   { name: "Configuration", href: "/settings", icon: Settings },
 ];
 
