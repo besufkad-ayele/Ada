@@ -14,16 +14,22 @@ import {
   Globe,
   MessageSquare,
   LogOut,
+  Users,
+  UserCircle,
 } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 
 const navigation = [
   { name: "Dashboard", href: "/dashboard", icon: BarChart3 },
+  { name: "Airline Pricing", href: "/airline-pricing", icon: Sparkles, badge: "NEW" },
   { name: "Pricing & Inventory", href: "/pricing", icon: CalendarDays },
   { name: "Packages", href: "/packages", icon: PackageCheck },
   { name: "AI Simulator", href: "/simulate", icon: Sparkles, badge: "Demo" },
-  { name: "Ask Revenue AI", href: "/ask", icon: MessageSquare, badge: "Gemini" },
+  { name: "Ask Revenue AI", href: "/ask", icon: MessageSquare, badge: "AI" },
+  { name: "User Management", href: "/admin-users", icon: Users, adminOnly: true },
+  { name: "All Bookings", href: "/admin-bookings", icon: CalendarDays, adminOnly: true },
+  { name: "My Profile", href: "/profile", icon: UserCircle },
   { name: "Configuration", href: "/settings", icon: Settings },
 ];
 
@@ -31,8 +37,10 @@ export function AppSidebar() {
   const pathname = usePathname();
   const router = useRouter();
   const [user, setUser] = useState<any>(null);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
     const storedUser = localStorage.getItem("kuraz_user");
     if (storedUser) {
       setUser(JSON.parse(storedUser));
@@ -44,8 +52,30 @@ export function AppSidebar() {
     router.push("/login");
   };
 
-  if (pathname.startsWith("/book") || pathname === "/landing" || pathname === "/login") {
-    return null; // Hide sidebar on public pages
+  // Don't render anything until mounted (prevents flash)
+  if (!mounted) {
+    return null;
+  }
+
+  // Hide sidebar on public pages and auth pages
+  const hideSidebarPaths = [
+    "/book",
+    "/landing",
+    "/login",
+    "/user-login",
+    "/signup",
+    "/register",
+    "/user-dashboard",
+    "/booking",
+  ];
+  
+  if (hideSidebarPaths.some(path => pathname.startsWith(path))) {
+    return null;
+  }
+
+  // Hide sidebar on admin pages if not logged in
+  if ((pathname === "/admin-users" || pathname === "/profile") && !user) {
+    return null;
   }
 
   return (
@@ -62,6 +92,11 @@ export function AppSidebar() {
       <div className="flex flex-1 flex-col overflow-y-auto pt-6 pb-4">
         <nav className="flex-1 space-y-1 px-4">
           {navigation.map((item) => {
+            // Hide admin-only items for non-admin users
+            if (item.adminOnly && user?.role !== "admin" && user?.role !== "manager") {
+              return null;
+            }
+
             const isActive = pathname === item.href;
             return (
               <Link
@@ -83,14 +118,19 @@ export function AppSidebar() {
                 />
                 {item.name}
                 
-                {item.name === "AI Simulator" && (
+                {item.badge === "NEW" && (
+                  <span className="ml-auto inline-flex items-center rounded-full bg-green-500/20 px-2.5 py-0.5 text-xs font-medium text-green-400">
+                    NEW
+                  </span>
+                )}
+                {item.badge === "Demo" && (
                   <span className="ml-auto inline-flex items-center rounded-full bg-primary/20 px-2.5 py-0.5 text-xs font-medium text-primary">
                     Demo
                   </span>
                 )}
-                {item.name === "Ask Revenue AI" && (
+                {item.badge === "AI" && (
                   <span className="ml-auto inline-flex items-center rounded-full bg-emerald-500/20 px-2.5 py-0.5 text-xs font-medium text-emerald-400">
-                    Gemini
+                    AI
                   </span>
                 )}
               </Link>
