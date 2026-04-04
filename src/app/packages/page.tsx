@@ -4,9 +4,10 @@ import { useEffect, useState } from "react";
 import { PackageMetrics } from "../../components/dashboard/PackageMetrics";
 import { API_BASE } from "../../lib/api";
 import { ProtectedRoute } from "../../components/ProtectedRoute";
+import { PageHeader } from "../../components/layout/PageHeader";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { BrainCircuit, Loader2, Sparkles, CheckCircle2 } from "lucide-react";
+import { BrainCircuit, Loader2, Sparkles, CheckCircle2, PackageCheck } from "lucide-react";
 
 function PackagesPageContent() {
   const [catalog, setCatalog] = useState<any[]>([]);
@@ -88,15 +89,14 @@ function PackagesPageContent() {
   });
 
   return (
-    <div className="p-8 max-w-7xl mx-auto space-y-8">
-      <div className="flex justify-between items-end">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight text-white mb-2">Service Packages</h1>
-          <p className="text-muted-foreground">AI-recommended service bundles and their financial performance.</p>
-        </div>
-        
-        {/* Gemini Generative Input Section */}
-        <div className="flex flex-col items-end gap-2 bg-primary/5 p-4 border border-primary/20 rounded-xl relative overflow-hidden max-w-sm w-full shadow-lg">
+    <div className="p-6 md:p-8 max-w-7xl mx-auto space-y-8">
+      <PageHeader
+        icon={PackageCheck}
+        title="Service"
+        highlight="Packages"
+        description="AI-recommended service bundles and their financial performance."
+        actions={
+          <div className="flex flex-col items-end gap-2 bg-primary/5 p-4 border border-primary/20 rounded-xl relative overflow-hidden max-w-sm w-full shadow-lg">
           <div className="absolute top-0 right-0 w-32 h-32 bg-primary/10 blur-[40px] rounded-full pointer-events-none" />
           <div className="w-full flex justify-between items-center z-10 mb-1">
             <span className="text-xs font-bold uppercase tracking-widest text-primary flex items-center">
@@ -122,8 +122,9 @@ function PackagesPageContent() {
               {isGenerating ? <Loader2 className="h-3 w-3 animate-spin" /> : <BrainCircuit className="h-3 w-3" />}
             </Button>
           </div>
-        </div>
-      </div>
+          </div>
+        }
+      />
 
       <PackageMetrics data={mergedData} />
     </div>

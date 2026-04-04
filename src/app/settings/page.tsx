@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Settings, Database, Brain, Hotel, Zap } from "lucide-react";
 import { API_BASE } from "@/lib/api";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
+import { PageHeader } from "@/components/layout/PageHeader";
 
 const sections = [
   {
@@ -54,16 +55,13 @@ const sections = [
 
 function SettingsPageContent() {
   return (
-    <div className="p-8 max-w-7xl mx-auto space-y-8">
-      <div>
-        <h1 className="text-3xl font-bold tracking-tight text-white mb-2 flex items-center">
-          <Settings className="mr-3 h-8 w-8 text-primary" />
-          System Configuration
-        </h1>
-        <p className="text-muted-foreground">
-          Current engine parameters and system settings for Kuraz AI.
-        </p>
-      </div>
+    <div className="p-6 md:p-8 max-w-7xl mx-auto space-y-8">
+      <PageHeader
+        icon={Settings}
+        title="System"
+        highlight="Configuration"
+        description="Current engine parameters and system settings for Kuraz AI."
+      />
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {sections.map((section) => (
