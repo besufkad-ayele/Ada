@@ -18,12 +18,31 @@ import {
 } from "lucide-react";
 import { API_BASE } from "@/lib/api";
 
+interface User {
+  name: string;
+  role: string;
+  email?: string;
+}
+
+interface Destination {
+  code: string;
+  name: string;
+  country: string;
+}
+
+interface RoomType {
+  code: string;
+  name: string;
+  total_count: number;
+  base_rate_etb: number;
+}
+
 export default function DashboardPage() {
   const router = useRouter();
-  const [user, setUser] = useState<any>(null);
-  const [destinations, setDestinations] = useState<any[]>([]);
-  const [roomTypes, setRoomTypes] = useState<any[]>([]);
-  const [users, setUsers] = useState<any[]>([]);
+  const [user, setUser] = useState<User | null>(null);
+  const [destinations, setDestinations] = useState<Destination[]>([]);
+  const [roomTypes, setRoomTypes] = useState<RoomType[]>([]);
+  const [users, setUsers] = useState<User[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
